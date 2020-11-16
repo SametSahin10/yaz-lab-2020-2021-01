@@ -1,4 +1,4 @@
-package com.company;
+package com.company.user_interface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,8 @@ public class Board {
         ImageIcon bLetterIcon = new ImageIcon(getClass().getResource("assets/b_letter_icon.png"));
         ImageIcon cLetterIcon = new ImageIcon(getClass().getResource("assets/c_letter_icon.png"));
         ImageIcon dLetterIcon = new ImageIcon(getClass().getResource("assets/d_letter_icon.png"));
-        ImageIcon spinningGoldGIF = new ImageIcon(getClass().getResource("assets/gold_icon.png"));
+        ImageIcon goldIcon = new ImageIcon(getClass().getResource("assets/gold_icon.png"));
+        ImageIcon chestIcon = new ImageIcon(getClass().getResource("assets/chest_icon.png"));
 
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfColumns; j++) {
@@ -43,7 +44,11 @@ public class Board {
                     label.setIcon(dLetterIcon);
                 } else {
                     // A cell that is not a side.
-                    label.setIcon(spinningGoldGIF);
+                    if (i % 2 == 0) {
+                        label.setIcon(goldIcon);
+                    } else {
+                        label.setIcon(chestIcon);
+                    }
                 }
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setVerticalAlignment(SwingConstants.CENTER);

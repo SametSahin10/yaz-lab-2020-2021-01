@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.user_interface.Board;
+
 import javax.swing.*;
 
 public class Main {
