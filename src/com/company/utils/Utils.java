@@ -17,6 +17,7 @@ public class Utils {
     }
 
     public static ArrayList<Integer> selectCellsThatWillHaveGold(int totalNumOfCells, int numOfCellsThatWillHaveGold) {
+        // TODO: Do not add the same cell twice
         ArrayList<Integer> indicesOfCellsThatHaveGold = new ArrayList<>();
         for (int i = 0; i < numOfCellsThatWillHaveGold; i++) {
             int randomIndex = random.nextInt(totalNumOfCells);
@@ -28,6 +29,7 @@ public class Utils {
     public static ArrayList<Integer> selectCellsThatWillHaveSecretGold(
         ArrayList<Integer> indicesOfCellsThatWillHaveGold, int numOfCellsThatWillHaveSecretGold
     ) {
+        // TODO: Do not add the same cell twice
         ArrayList<Integer> indicesOfCellsThatWillHaveSecretGold = new ArrayList<>();
         for (int i = 0; i < numOfCellsThatWillHaveSecretGold; i++) {
             int randomIndex = random.nextInt(indicesOfCellsThatWillHaveGold.size());

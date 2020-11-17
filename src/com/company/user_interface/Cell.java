@@ -84,4 +84,9 @@ public class Cell extends JLabel {
     public void setShowSecretGold(boolean showSecretGold) {
         this.showSecretGold = showSecretGold;
     }
+
+    public void clear() {
+        setIcon(null);
+//        oldCell.setText("0");
+    }
 }

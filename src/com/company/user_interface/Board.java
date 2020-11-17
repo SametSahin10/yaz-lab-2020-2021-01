@@ -12,10 +12,28 @@ public class Board {
     private final int numOfColumns;
     private final double percentageOfCellsThatWillHaveGold;
     private final double percentageOfCellsThatWillHaveSecretGold;
+    private final int totalAmountOfGoldEachUserWillHave;
+    private final int numOfCellsPlayersMoveEachTurn;
+
+    public Board(
+            int numOfRows,
+            int numOfColumns,
+            double percentageOfCellsThatWillHaveGold,
+            double percentageOfCellsThatWillHaveSecretGold,
+            int totalAmountOfGoldEachUserWillHave,
+            int numOfCellsPlayersMoveEachTurn
+    ) {
+        this.numOfRows = numOfRows;
+        this.numOfColumns = numOfColumns;
+        this.percentageOfCellsThatWillHaveGold = percentageOfCellsThatWillHaveGold;
+        this.percentageOfCellsThatWillHaveSecretGold = percentageOfCellsThatWillHaveSecretGold;
+        this.totalAmountOfGoldEachUserWillHave = totalAmountOfGoldEachUserWillHave;
+        this.numOfCellsPlayersMoveEachTurn = numOfCellsPlayersMoveEachTurn;
+        initializeGUI();
+    }
 
     private JPanel boardPanel;
-//    private final ArrayList<Cell> cells = new ArrayList<>();
-    private Cell cells[][];
+    private Cell[][] cells;
 
     final ImageIcon aLetterIcon = new ImageIcon(getClass().getResource("../assets/a_letter_icon.png"));
     final ImageIcon bLetterIcon = new ImageIcon(getClass().getResource("../assets/b_letter_icon.png"));
@@ -29,21 +47,76 @@ public class Board {
     private Player playerC;
     private Player playerD;
 
-    public Board(
-        int numOfRows,
-        int numOfColumns,
-        double percentageOfCellsThatWillHaveGold,
-        double percentageOfCellsThatWillHaveSecretGold
-    ) {
-        this.numOfRows = numOfRows;
-        this.numOfColumns = numOfColumns;
-        this.percentageOfCellsThatWillHaveGold = percentageOfCellsThatWillHaveGold;
-        this.percentageOfCellsThatWillHaveSecretGold = percentageOfCellsThatWillHaveSecretGold;
-        initializeGUI();
-    }
+    int i = 0;
 
     public void initializeGUI() {
         setupBoard();
+        Timer timer = new Timer(3000, e -> {
+            Timer localTimer = (Timer) (e.getSource());
+            if (i == 2) {
+                localTimer.stop();
+                return;
+            }
+            Cell cellForPlayerA = cells[playerA.getCurrentCell().getIndexOfRow() + 2][playerA.getCurrentCell().getIndexOfColumn() + 2];
+            Cell cellForPlayerB = cells[playerB.getCurrentCell().getIndexOfRow() + 2][playerB.getCurrentCell().getIndexOfColumn() - 2];
+            Cell cellForPlayerC = cells[playerC.getCurrentCell().getIndexOfRow() - 2][playerC.getCurrentCell().getIndexOfColumn() + 2];
+            Cell cellForPlayerD = cells[playerD.getCurrentCell().getIndexOfRow() - 2][playerD.getCurrentCell().getIndexOfColumn() - 2];
+
+            playerA.move(cellForPlayerA);
+            playerA.decreaseTheAmountOfGold(20);
+            System.out.println("Amount of gold player A has: " + playerA.getTotalAmountOfGold());
+            if (playerA.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player A");
+                endGameForPlayer(playerA);
+            }
+
+            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfCellsThatHaveGold == 0) {
+                // End the game for everyone.
+            }
+
+            playerB.move(cellForPlayerB);
+            playerB.decreaseTheAmountOfGold(40);
+            System.out.println("Amount of gold player B has: " + playerA.getTotalAmountOfGold());
+            if (playerB.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player B");
+                endGameForPlayer(playerB);
+            }
+
+            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfCellsThatHaveGold == 0) {
+                // End the game for everyone.
+            }
+
+            playerC.move(cellForPlayerC);
+            playerC.decreaseTheAmountOfGold(40);
+            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
+            if (playerC.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player C");
+                endGameForPlayer(playerC);
+            }
+
+            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfCellsThatHaveGold == 0) {
+                // End the game for everyone.
+            }
+
+            playerD.move(cellForPlayerD);
+            playerD.decreaseTheAmountOfGold(40);
+            System.out.println("Amount of gold player D has: " + playerA.getTotalAmountOfGold());
+            if (playerD.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player D");
+                endGameForPlayer(playerD);
+            }
+
+            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfCellsThatHaveGold == 0) {
+                // End the game for everyone.
+            }
+
+            i++;
+        });
+        timer.start();
     }
 
     private void setupBoard() {
@@ -81,19 +154,19 @@ public class Board {
                 if (i == 0 && j == 0) {
                     // First cell
                     cell.setIcon(aLetterIcon);
-                    playerA = new Player(200, cell, null);
+                    playerA = new Player(aLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
                 } else if (i == 0 && j == numOfColumns - 1) {
                     // Last cell of the first row
                     cell.setIcon(bLetterIcon);
-                    playerB = new Player(200, cell, null);
+                    playerB = new Player(bLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
                 } else if (i == numOfRows - 1 && j == 0) {
                     // First cell of the last row
                     cell.setIcon(cLetterIcon);
-                    playerC = new Player(200, cell, null);
+                    playerC = new Player(cLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
                 } else if (i == numOfRows - 1 && j == numOfColumns - 1) {
                     // Last cell
                     cell.setIcon(dLetterIcon);
-                    playerD = new Player(200, cell, null);
+                    playerD = new Player(dLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
                 } else {
                     // A cell that is not a side.
 
@@ -112,13 +185,15 @@ public class Board {
                             // if all of the secret golds have already been added.
                             if (numOfCellsThatWillHaveSecretGold != 0) {
                                 boolean cellWillHaveSecretGold = indicesOfCellsThatWillHaveSecretGold.contains(
-                                        currentIndex
+                                    currentIndex
                                 );
                                 if (cellWillHaveSecretGold) {
                                     cell.setHasSecretGold(true);
                                     int amountOfSecretGold = Utils.generateRandomAmountOfGold();
                                     cell.setAmountOfSecretGold(amountOfSecretGold);
                                     numOfCellsThatWillHaveSecretGold--;
+                                    indicesOfCellsThatWillHaveSecretGold.remove(currentIndex);
+                                    indicesOfCellsThatWillHaveGold.remove(currentIndex);
                                 }
                             }
                         } else {
@@ -129,57 +204,32 @@ public class Board {
                 cell.setHorizontalAlignment(SwingConstants.CENTER);
                 cell.setVerticalAlignment(SwingConstants.CENTER);
                 cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                // Uncomment the two lines below to see how much gold the cell has.
+//                cell.setText(String.valueOf(cell.getAmountOfGold()));
+//                cell.setVerticalTextPosition(SwingConstants.BOTTOM);
                 cells[i][j] = cell;
                 boardPanel.add(cell);
             }
         }
     }
 
-    public void movePlayerA() {
-        int indexOfRow = playerA.getCurrentCell().getIndexOfRow();
-        int indexOfColumn = playerA.getCurrentCell().getIndexOfColumn();
-        Cell oldCell = cells[indexOfRow][indexOfColumn];
-        Cell newCell = cells[indexOfRow + 1][indexOfColumn + 1];
-        newCell.setIcon(aLetterIcon);
-        playerA.setCurrentCell(newCell);
-        clearOldCell(oldCell);
-    }
-
-    public void movePlayerB() {
-        int indexOfRow = playerB.getCurrentCell().getIndexOfRow();
-        int indexOfColumn = playerB.getCurrentCell().getIndexOfColumn();
-        Cell oldCell = cells[indexOfRow][indexOfColumn];
-        Cell newCell = cells[indexOfRow + 1][indexOfColumn - 1];
-        newCell.setIcon(bLetterIcon);
-        playerB.setCurrentCell(newCell);
-        clearOldCell(oldCell);
-    }
-
-    public void movePlayerC() {
-        int indexOfRow = playerC.getCurrentCell().getIndexOfRow();
-        int indexOfColumn = playerC.getCurrentCell().getIndexOfColumn();
-        Cell oldCell = cells[indexOfRow][indexOfColumn];
-        Cell newCell = cells[indexOfRow - 1][indexOfColumn + 1];
-        newCell.setIcon(bLetterIcon);
-        playerC.setCurrentCell(newCell);
-        clearOldCell(oldCell);
-    }
-
-    public void movePlayerD() {
-        int indexOfRow = playerD.getCurrentCell().getIndexOfRow();
-        int indexOfColumn = playerD.getCurrentCell().getIndexOfColumn();
-        Cell oldCell = cells[indexOfRow][indexOfColumn];
-        Cell newCell = cells[indexOfRow - 1][indexOfColumn - 1];
-        newCell.setIcon(bLetterIcon);
-        playerD.setCurrentCell(newCell);
-        clearOldCell(oldCell);
-    }
-
-    private void clearOldCell(Cell oldCell) {
-        oldCell.setIcon(null);
+    private void endGameForPlayer(Player player) {
+        Cell currentCell = player.getCurrentCell();
+        currentCell.clear();
     }
 
     public JPanel getBoardPanel() {
         return boardPanel;
+    }
+    
+    private int getNumOfCellsThatHaveGold() {
+        int numOfCellsThatHaveGold = 0;
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
+                if (cells[i][j].isHasGold() || cells[i][j].isHasSecretGold()) numOfCellsThatHaveGold++;
+            }
+        }
+        System.out.println("The number of cells that have gold: " + numOfCellsThatHaveGold);
+        return numOfCellsThatHaveGold;
     }
 }
