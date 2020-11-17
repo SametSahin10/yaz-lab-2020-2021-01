@@ -9,7 +9,12 @@ public class Main {
         Runnable runnable = () -> {
             JFrame frame = new JFrame("Gold Hunt");
 
-            Board board = new Board(20, 15);
+            Board board = new Board(
+                20,
+                20,
+                20,
+                10
+            );
             frame.add(board.getBoardPanel());
 
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
