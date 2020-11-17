@@ -29,6 +29,10 @@ public class Board {
     }
 
     public void initializeGUI() {
+        setupBoard();
+    }
+
+    private void setupBoard() {
         boardPanel = new JPanel(new GridLayout(numOfRows, numOfColumns));
 
         ImageIcon aLetterIcon = new ImageIcon(getClass().getResource("../assets/a_letter_icon.png"));
@@ -45,12 +49,12 @@ public class Board {
         System.out.println("number of cells that will have secret gold: " + numOfCellsThatWillHaveSecretGold);
 
         final ArrayList<Integer> indicesOfCellsThatWillHaveGold = Utils.selectCellsThatWillHaveGold(
-            numOfRows * numOfColumns,
-            numOfCellsThatWillHaveGold
+                numOfRows * numOfColumns,
+                numOfCellsThatWillHaveGold
         );
 
         final ArrayList<Integer> indicesOfCellsThatWillHaveSecretGold = Utils.selectCellsThatWillHaveSecretGold(
-            indicesOfCellsThatWillHaveGold, numOfCellsThatWillHaveSecretGold
+                indicesOfCellsThatWillHaveGold, numOfCellsThatWillHaveSecretGold
         );
 
         for (int i = 0; i < numOfRows; i++) {
@@ -58,14 +62,14 @@ public class Board {
                 // currentIndex tells the index of the cell we're currently adding in.
                 int currentIndex = i * numOfColumns + j;
                 Cell cell = new Cell(
-                    i,
-                    j,
-                    false,
-                    false,
-                    0,
-                    0,
-                    false,
-                    null
+                        i,
+                        j,
+                        false,
+                        false,
+                        0,
+                        0,
+                        false,
+                        null
                 );
                 if (i == 0 && j == 0) {
                     // First cell
@@ -97,7 +101,7 @@ public class Board {
                             // if all of the secret golds have already been added.
                             if (numOfCellsThatWillHaveSecretGold != 0) {
                                 boolean cellWillHaveSecretGold = indicesOfCellsThatWillHaveSecretGold.contains(
-                                    currentIndex
+                                        currentIndex
                                 );
                                 if (cellWillHaveSecretGold) {
                                     cell.setHasSecretGold(true);
