@@ -15,7 +15,7 @@ public class Main {
                 10,
                 10,
                 50,
-                3
+                4
             );
             frame.add(board.getBoardPanel());
 

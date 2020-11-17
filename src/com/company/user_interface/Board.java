@@ -59,10 +59,10 @@ public class Board {
                 localTimer.stop();
                 return;
             }
-            Cell cellForPlayerA = cells[playerA.getCurrentCell().getIndexOfRow() + 2][playerA.getCurrentCell().getIndexOfColumn() + 2];
-            Cell cellForPlayerB = cells[playerB.getCurrentCell().getIndexOfRow() + 2][playerB.getCurrentCell().getIndexOfColumn() - 2];
-            Cell cellForPlayerC = cells[playerC.getCurrentCell().getIndexOfRow() - 2][playerC.getCurrentCell().getIndexOfColumn() + 2];
-            Cell cellForPlayerD = cells[playerD.getCurrentCell().getIndexOfRow() - 2][playerD.getCurrentCell().getIndexOfColumn() - 2];
+            Cell cellForPlayerA = cells[playerA.getCurrentCell().getIndexOfRow()][playerA.getCurrentCell().getIndexOfColumn() + numOfCellsPlayersMoveEachTurn];
+            Cell cellForPlayerB = cells[playerB.getCurrentCell().getIndexOfRow() + numOfCellsPlayersMoveEachTurn][playerB.getCurrentCell().getIndexOfColumn()];
+            Cell cellForPlayerC = cells[playerC.getCurrentCell().getIndexOfRow()][playerC.getCurrentCell().getIndexOfColumn() + numOfCellsPlayersMoveEachTurn];
+            Cell cellForPlayerD = cells[playerD.getCurrentCell().getIndexOfRow()][playerD.getCurrentCell().getIndexOfColumn() - numOfCellsPlayersMoveEachTurn];
 
             playerA.move(cellForPlayerA);
             playerA.decreaseTheAmountOfGold(20);
