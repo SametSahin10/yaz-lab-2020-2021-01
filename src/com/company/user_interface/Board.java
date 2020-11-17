@@ -51,72 +51,72 @@ public class Board {
 
     public void initializeGUI() {
         setupBoard();
-        Timer timer = new Timer(3000, e -> {
-            Timer localTimer = (Timer) (e.getSource());
-            if (i == 2) {
-                localTimer.stop();
-                return;
-            }
-            Cell cellForPlayerA = cells[playerA.getCurrentCell().getIndexOfRow() + 2][playerA.getCurrentCell().getIndexOfColumn() + 2];
-            Cell cellForPlayerB = cells[playerB.getCurrentCell().getIndexOfRow() + 2][playerB.getCurrentCell().getIndexOfColumn() - 2];
-            Cell cellForPlayerC = cells[playerC.getCurrentCell().getIndexOfRow() - 2][playerC.getCurrentCell().getIndexOfColumn() + 2];
-            Cell cellForPlayerD = cells[playerD.getCurrentCell().getIndexOfRow() - 2][playerD.getCurrentCell().getIndexOfColumn() - 2];
-
-            playerA.move(cellForPlayerA);
-            playerA.decreaseTheAmountOfGold(20);
-            System.out.println("Amount of gold player A has: " + playerA.getTotalAmountOfGold());
-            if (playerA.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player A");
-                endGameForPlayer(playerA);
-            }
-
-            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfCellsThatHaveGold == 0) {
-                // End the game for everyone.
-            }
-
-            playerB.move(cellForPlayerB);
-            playerB.decreaseTheAmountOfGold(40);
-            System.out.println("Amount of gold player B has: " + playerA.getTotalAmountOfGold());
-            if (playerB.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player B");
-                endGameForPlayer(playerB);
-            }
-
-            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfCellsThatHaveGold == 0) {
-                // End the game for everyone.
-            }
-
-            playerC.move(cellForPlayerC);
-            playerC.decreaseTheAmountOfGold(40);
-            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
-            if (playerC.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player C");
-                endGameForPlayer(playerC);
-            }
-
-            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfCellsThatHaveGold == 0) {
-                // End the game for everyone.
-            }
-
-            playerD.move(cellForPlayerD);
-            playerD.decreaseTheAmountOfGold(40);
-            System.out.println("Amount of gold player D has: " + playerA.getTotalAmountOfGold());
-            if (playerD.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player D");
-                endGameForPlayer(playerD);
-            }
-
-            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfCellsThatHaveGold == 0) {
-                // End the game for everyone.
-            }
-
-            i++;
-        });
-        timer.start();
+//        Timer timer = new Timer(3000, e -> {
+//            Timer localTimer = (Timer) (e.getSource());
+//            if (i == 2) {
+//                localTimer.stop();
+//                return;
+//            }
+//            Cell cellForPlayerA = cells[playerA.getCurrentCell().getIndexOfRow() + 2][playerA.getCurrentCell().getIndexOfColumn() + 2];
+//            Cell cellForPlayerB = cells[playerB.getCurrentCell().getIndexOfRow() + 2][playerB.getCurrentCell().getIndexOfColumn() - 2];
+//            Cell cellForPlayerC = cells[playerC.getCurrentCell().getIndexOfRow() - 2][playerC.getCurrentCell().getIndexOfColumn() + 2];
+//            Cell cellForPlayerD = cells[playerD.getCurrentCell().getIndexOfRow() - 2][playerD.getCurrentCell().getIndexOfColumn() - 2];
+//
+//            playerA.move(cellForPlayerA);
+//            playerA.decreaseTheAmountOfGold(20);
+//            System.out.println("Amount of gold player A has: " + playerA.getTotalAmountOfGold());
+//            if (playerA.getTotalAmountOfGold() <= 0) {
+//                System.out.println("Ending the game for player A");
+//                endGameForPlayer(playerA);
+//            }
+//
+//            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+//            if (numOfCellsThatHaveGold == 0) {
+//                // End the game for everyone.
+//            }
+//
+//            playerB.move(cellForPlayerB);
+//            playerB.decreaseTheAmountOfGold(40);
+//            System.out.println("Amount of gold player B has: " + playerA.getTotalAmountOfGold());
+//            if (playerB.getTotalAmountOfGold() <= 0) {
+//                System.out.println("Ending the game for player B");
+//                endGameForPlayer(playerB);
+//            }
+//
+//            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+//            if (numOfCellsThatHaveGold == 0) {
+//                // End the game for everyone.
+//            }
+//
+//            playerC.move(cellForPlayerC);
+//            playerC.decreaseTheAmountOfGold(40);
+//            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
+//            if (playerC.getTotalAmountOfGold() <= 0) {
+//                System.out.println("Ending the game for player C");
+//                endGameForPlayer(playerC);
+//            }
+//
+//            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+//            if (numOfCellsThatHaveGold == 0) {
+//                // End the game for everyone.
+//            }
+//
+//            playerD.move(cellForPlayerD);
+//            playerD.decreaseTheAmountOfGold(40);
+//            System.out.println("Amount of gold player D has: " + playerA.getTotalAmountOfGold());
+//            if (playerD.getTotalAmountOfGold() <= 0) {
+//                System.out.println("Ending the game for player D");
+//                endGameForPlayer(playerD);
+//            }
+//
+//            numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+//            if (numOfCellsThatHaveGold == 0) {
+//                // End the game for everyone.
+//            }
+//
+//            i++;
+//        });
+//        timer.start();
     }
 
     private void setupBoard() {
@@ -125,17 +125,23 @@ public class Board {
 
         int numOfCellsThatWillHaveGold = (int) (numOfRows * numOfColumns * percentageOfCellsThatWillHaveGold / 100);
         int numOfCellsThatWillHaveSecretGold = (int) (numOfCellsThatWillHaveGold * percentageOfCellsThatWillHaveSecretGold / 100);
+        if (numOfCellsThatWillHaveSecretGold == 0) {
+            // Number of cells that will have secret gold must be at least one.
+            numOfCellsThatWillHaveSecretGold = 1;
+        }
 
         System.out.println("number of cells that will have gold: " + numOfCellsThatWillHaveGold);
         System.out.println("number of cells that will have secret gold: " + numOfCellsThatWillHaveSecretGold);
 
         final ArrayList<Integer> indicesOfCellsThatWillHaveGold = Utils.selectCellsThatWillHaveGold(
+                numOfRows,
+                numOfColumns,
                 numOfRows * numOfColumns,
                 numOfCellsThatWillHaveGold
         );
 
         final ArrayList<Integer> indicesOfCellsThatWillHaveSecretGold = Utils.selectCellsThatWillHaveSecretGold(
-                indicesOfCellsThatWillHaveGold, numOfCellsThatWillHaveSecretGold
+                numOfRows, numOfColumns, indicesOfCellsThatWillHaveGold, numOfCellsThatWillHaveSecretGold
         );
 
         for (int i = 0; i < numOfRows; i++) {
@@ -192,8 +198,8 @@ public class Board {
                                     int amountOfSecretGold = Utils.generateRandomAmountOfGold();
                                     cell.setAmountOfSecretGold(amountOfSecretGold);
                                     numOfCellsThatWillHaveSecretGold--;
-                                    indicesOfCellsThatWillHaveSecretGold.remove(currentIndex);
-                                    indicesOfCellsThatWillHaveGold.remove(currentIndex);
+                                    indicesOfCellsThatWillHaveGold.removeIf(index -> index == currentIndex);
+                                    indicesOfCellsThatWillHaveSecretGold.removeIf(index -> index == currentIndex);
                                 }
                             }
                         } else {

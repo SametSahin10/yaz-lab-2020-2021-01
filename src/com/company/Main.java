@@ -10,8 +10,8 @@ public class Main {
             JFrame frame = new JFrame("Gold Hunt");
 
             Board board = new Board(
-                20,
-                20,
+                10,
+                10,
                 20,
                 10,
                 200,
