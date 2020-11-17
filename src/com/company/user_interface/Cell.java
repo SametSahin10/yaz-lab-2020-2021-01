@@ -10,8 +10,6 @@ public class Cell extends JLabel {
     private int amountOfGold;
     private int amountOfSecretGold;
     private boolean showSecretGold;
-    private Cell targetCell;
-
 
     public Cell(
         int indexOfRow,
@@ -20,8 +18,7 @@ public class Cell extends JLabel {
         boolean hasSecretGold,
         int amountOfGold,
         int amountOfSecretGold,
-        boolean showSecretGold,
-        Cell targetCell
+        boolean showSecretGold
     ) {
         this.indexOfRow = indexOfRow;
         this.indexOfColumn = indexOfColumn;
@@ -30,7 +27,6 @@ public class Cell extends JLabel {
         this.amountOfGold = amountOfGold;
         this.amountOfSecretGold = amountOfSecretGold;
         this.showSecretGold = showSecretGold;
-        this.targetCell = targetCell;
     }
 
     public int getIndexOfRow() {
@@ -87,13 +83,5 @@ public class Cell extends JLabel {
 
     public void setShowSecretGold(boolean showSecretGold) {
         this.showSecretGold = showSecretGold;
-    }
-
-    public Cell getTargetCell() {
-        return targetCell;
-    }
-
-    public void setTargetCell(Cell targetCell) {
-        this.targetCell = targetCell;
     }
 }
