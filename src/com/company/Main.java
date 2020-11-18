@@ -10,11 +10,11 @@ public class Main {
             JFrame frame = new JFrame("Gold Hunt");
 
             Board board = new Board(
-                20,
-                20,
                 10,
                 10,
-                50,
+                10,
+                10,
+                200,
                 4
             );
             frame.add(board.getBoardPanel());
