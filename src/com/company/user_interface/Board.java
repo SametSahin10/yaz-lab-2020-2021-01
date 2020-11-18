@@ -177,136 +177,6 @@ public class Board {
     }
 
     private void setupGameLoop() {
-        timerToSelectTargetCellForB = new Timer(3000, e -> {
-            boolean targetCellHasGold = playerB.getTargetCell().isHasGold();
-            if (playerB.getTargetCell() != null && !targetCellHasGold) {
-                // Player B has already a target.
-                // Start moving to target.
-                timerToMoveToTargetCellForB.start();
-                return;
-            }
-
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
-
-            System.out.println("indexOfRow: " + indexOfRow);
-            System.out.println("indexOfColumn: " + indexOfColumn);
-
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerB.setTargetCell(randomCell);
-            randomCell.setText("Targeted by B");
-            timerToMoveToTargetCellForB.start();
-        });
-
-        timerToMoveToTargetCellForB = new Timer(3000, e -> {
-            playerB.moveToTargetCell();
-            playerB.decreaseTheAmountOfGold(20);
-            System.out.println("Amount of gold player B has: " + playerA.getTotalAmountOfGold());
-            if (playerB.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player B");
-                endGameForPlayer(playerB);
-            }
-            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
-                System.out.println("Game over");
-                return;
-            }
-            timerToSelectTargetCellForC.start();
-        });
-
-        timerToSelectTargetCellForC = new Timer(3000, e -> {
-            boolean targetCellHasGold = playerC.getTargetCell().isHasGold();
-            if (playerC.getTargetCell() != null && !targetCellHasGold) {
-                // Player C has already a target.
-                // Start moving to target.
-                timerToMoveToTargetCellForC.start();
-                return;
-            }
-
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
-
-            System.out.println("indexOfRow: " + indexOfRow);
-            System.out.println("indexOfColumn: " + indexOfColumn);
-
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerC.setTargetCell(randomCell);
-            randomCell.setText("Targeted by C");
-            timerToMoveToTargetCellForC.start();
-        });
-
-        timerToMoveToTargetCellForC = new Timer(3000, e -> {
-            playerC.moveToTargetCell();
-            playerC.decreaseTheAmountOfGold(20);
-            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
-            if (playerC.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player C");
-                endGameForPlayer(playerC);
-            }
-
-            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
-                System.out.println("Game over");
-                return;
-            }
-            timerToSelectTargetCellForD.start();
-        });
-
-        timerToSelectTargetCellForD = new Timer(3000, e -> {
-            boolean targetCellHasGold = playerD.getTargetCell().isHasGold();
-            if (playerD.getTargetCell() != null && !targetCellHasGold) {
-                // Player D has already a target.
-                // Start moving to target.
-                timerToSelectTargetCellForD.start();
-                return;
-            }
-
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
-
-            System.out.println("indexOfRow: " + indexOfRow);
-            System.out.println("indexOfColumn: " + indexOfColumn);
-
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerD.setTargetCell(randomCell);
-            randomCell.setText("Targeted by D");
-            timerToMoveToTargetCellForD.start();
-        });
-
-        timerToMoveToTargetCellForD = new Timer(3000, e -> {
-            playerD.moveToTargetCell();
-            playerD.decreaseTheAmountOfGold(20);
-            System.out.println("Amount of gold player D has: " + playerA.getTotalAmountOfGold());
-            if (playerD.getTotalAmountOfGold() <= 0) {
-                System.out.println("Ending the game for player D");
-                endGameForPlayer(playerD);
-            }
-            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
-            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
-                System.out.println("Game over");
-                return;
-            }
-            // Start the loop again.
-            timerToMoveToTargetCellForA.start();
-        });
-
-        Timer timer = new Timer(1000, e -> timerToSelectTargetCellForA.start());
-        timer.start();
-    }
-
-    private void setupTimersForPlayer(Player player) {
         timerToSelectTargetCellForA = new Timer(3000, e -> {
             if (playerA.getTargetCell() != null) {
                 boolean targetCellHasGold = playerA.getTargetCell().isHasGold();
@@ -323,9 +193,6 @@ public class Board {
             int indexOfRow = randomIndex / numOfColumns;
             int indexOfColumn = randomIndex % numOfColumns;
 
-            System.out.println("indexOfRow: " + indexOfRow);
-            System.out.println("indexOfColumn: " + indexOfColumn);
-
             Cell randomCell = cells[indexOfRow][indexOfColumn];
 
             playerA.setTargetCell(randomCell);
@@ -334,9 +201,9 @@ public class Board {
         });
 
         timerToMoveToTargetCellForA = new Timer(3000, e -> {
+            System.out.println("Player A is moving");
             playerA.moveToTargetCell();
             playerA.decreaseTheAmountOfGold(20);
-            System.out.println("Amount of gold player A has: " + playerA.getTotalAmountOfGold());
             if (playerA.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player A");
                 endGameForPlayer(playerA);
@@ -346,8 +213,181 @@ public class Board {
                 System.out.println("Game over");
                 return;
             }
+
+            for (int i = 0; i < cells[0].length; i++) {
+                for (int j = 0; j < cells[i].length; j++) {
+                    if (cells[i][j] == null) {
+                        System.out.println("The cell " + i + ", " + j + " is null");
+                    }
+                }
+            }
+
             timerToSelectTargetCellForB.start();
         });
+
+        timerToSelectTargetCellForB = new Timer(3000, e -> {
+            if (playerB.getTargetCell() != null) {
+                boolean targetCellHasGold = playerB.getTargetCell().isHasGold();
+                if (targetCellHasGold) {
+                    // Player B has already a target that has gold.
+                    // Start moving to target.
+                    timerToMoveToTargetCellForB.start();
+                    return;
+                }
+            }
+
+            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
+                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
+            );
+            int indexOfRow = randomIndex / numOfColumns;
+            int indexOfColumn = randomIndex % numOfColumns;
+
+            Cell randomCell = cells[indexOfRow][indexOfColumn];
+
+            playerB.setTargetCell(randomCell);
+            randomCell.setText("Targeted by B");
+            timerToMoveToTargetCellForB.start();
+        });
+
+        timerToMoveToTargetCellForB = new Timer(3000, e -> {
+            System.out.println("Player B is moving");
+            playerB.moveToTargetCell();
+            playerB.decreaseTheAmountOfGold(20);
+            if (playerB.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player B");
+                endGameForPlayer(playerB);
+            }
+            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
+                System.out.println("Game over");
+                return;
+            }
+
+            for (int i = 0; i < cells[0].length; i++) {
+                for (int j = 0; j < cells[i].length; j++) {
+                    if (cells[i][j] == null) {
+                        System.out.println("The cell " + i + ", " + j + " is null");
+                    }
+                }
+            }
+
+            timerToSelectTargetCellForC.start();
+        });
+
+        timerToSelectTargetCellForC = new Timer(3000, e -> {
+            if (playerC.getTargetCell() != null) {
+                boolean targetCellHasGold = playerC.getTargetCell().isHasGold();
+                if (targetCellHasGold) {
+                    // Player C has already a target that has gold.
+                    // Start moving to target.
+                    timerToMoveToTargetCellForC.start();
+                    return;
+                }
+            }
+
+            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
+                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
+            );
+            int indexOfRow = randomIndex / numOfColumns;
+            int indexOfColumn = randomIndex % numOfColumns;
+
+            Cell randomCell = cells[indexOfRow][indexOfColumn];
+
+            playerC.setTargetCell(randomCell);
+            randomCell.setText("Targeted by C");
+            timerToMoveToTargetCellForC.start();
+        });
+
+        timerToMoveToTargetCellForC = new Timer(3000, e -> {
+            System.out.println("Player C is moving");
+            playerC.moveToTargetCell();
+            playerC.decreaseTheAmountOfGold(20);
+            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
+            if (playerC.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player C");
+                endGameForPlayer(playerC);
+            }
+
+            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
+                System.out.println("Game over");
+                return;
+            }
+
+            for (int i = 0; i < cells[0].length; i++) {
+                for (int j = 0; j < cells[i].length; j++) {
+                    if (cells[i][j] == null) {
+                        System.out.println("The cell " + i + ", " + j + " is null");
+                    }
+                }
+            }
+
+            timerToSelectTargetCellForD.start();
+        });
+
+        timerToSelectTargetCellForD = new Timer(3000, e -> {
+            if (playerD.getTargetCell() != null) {
+                boolean targetCellHasGold = playerD.getTargetCell().isHasGold();
+                if (targetCellHasGold) {
+                    // Player D has already a target that has gold.
+                    // Start moving to target.
+                    timerToMoveToTargetCellForD.start();
+                    return;
+                }
+            }
+
+            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
+                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
+            );
+            int indexOfRow = randomIndex / numOfColumns;
+            int indexOfColumn = randomIndex % numOfColumns;
+
+            Cell randomCell = cells[indexOfRow][indexOfColumn];
+
+            playerD.setTargetCell(randomCell);
+            randomCell.setText("Targeted by D");
+            timerToMoveToTargetCellForD.start();
+        });
+
+        timerToMoveToTargetCellForD = new Timer(3000, e -> {
+            System.out.println("Player D is moving");
+            playerD.moveToTargetCell();
+            playerD.decreaseTheAmountOfGold(20);
+            if (playerD.getTotalAmountOfGold() <= 0) {
+                System.out.println("Ending the game for player D");
+                endGameForPlayer(playerD);
+            }
+            int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
+            if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
+                System.out.println("Game over");
+                return;
+            }
+
+            for (int i = 0; i < cells[0].length; i++) {
+                for (int j = 0; j < cells[i].length; j++) {
+                    if (cells[i][j] == null) {
+                        System.out.println("The cell " + i + ", " + j + " is null");
+                    }
+                }
+            }
+
+            // Start the loop again.
+            timerToSelectTargetCellForA.start();
+        });
+
+        timerToSelectTargetCellForA.setRepeats(false);
+        timerToSelectTargetCellForB.setRepeats(false);
+        timerToSelectTargetCellForC.setRepeats(false);
+        timerToSelectTargetCellForD.setRepeats(false);
+
+        timerToMoveToTargetCellForA.setRepeats(false);
+        timerToMoveToTargetCellForB.setRepeats(false);
+        timerToMoveToTargetCellForC.setRepeats(false);
+        timerToMoveToTargetCellForD.setRepeats(false);
+
+        Timer timer = new Timer(1000, e -> timerToSelectTargetCellForA.start());
+        timer.setRepeats(false);
+        timer.start();
     }
 
     private void endGameForPlayer(Player player) {

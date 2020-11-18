@@ -1,7 +1,5 @@
 package com.company.utils;
 
-import com.company.user_interface.Cell;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -89,7 +87,6 @@ public class Utils {
                            && randomIndex != indexThatPlayerCStarts
                            && randomIndex != indexThatPlayerDStarts;
         }
-        System.out.println("Index of randomly selected target cell: " + indicesOfCellsThatWillHaveGold.get(randomIndex));
         return indicesOfCellsThatWillHaveGold.get(randomIndex);
     }
 }

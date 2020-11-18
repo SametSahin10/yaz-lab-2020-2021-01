@@ -50,10 +50,9 @@ public class Player {
     }
 
     public void move(Cell newCell) {
+        System.out.println("Moving to " + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn());
         if (newCell.isHasGold()) {
             increaseTheAmountOfGold(newCell.getAmountOfGold());
-            System.out.println("Player A received " + newCell.getAmountOfGold() + " gold");
-            System.out.println("Amount of gold player A has: " + getTotalAmountOfGold());
             newCell.setAmountOfGold(0);
             newCell.setHasGold(false);
             if (newCell.equals(targetCell)) {
