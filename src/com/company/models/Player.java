@@ -56,9 +56,19 @@ public class Player {
             System.out.println("Amount of gold player A has: " + getTotalAmountOfGold());
             newCell.setAmountOfGold(0);
             newCell.setHasGold(false);
+            if (newCell.equals(targetCell)) {
+                // Player has reached to its target.
+                System.out.println("Player has reached to its target.");
+                targetCell.setText("");
+                targetCell = null;
+            }
         }
         newCell.setIcon(icon);
         currentCell.clear();
         currentCell = newCell;
+    }
+
+    public void moveToTargetCell() {
+        move(targetCell);
     }
 }

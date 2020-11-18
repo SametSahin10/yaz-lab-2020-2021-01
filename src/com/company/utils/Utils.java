@@ -1,5 +1,7 @@
 package com.company.utils;
 
+import com.company.user_interface.Cell;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -68,5 +70,26 @@ public class Utils {
             indicesOfCellsThatWillHaveSecretGold.add(indicesOfCellsThatWillHaveGold.get(randomIndex));
         }
         return indicesOfCellsThatWillHaveGold;
+    }
+
+    public static int selectIndexOfTargetCellRandomly(
+        int numOfRows, int numOfColumns, ArrayList<Integer> indicesOfCellsThatWillHaveGold
+    ) {
+        int indexThatPlayerAStarts = 0;
+        int indexThatPlayerBStarts = numOfColumns;
+        int indexThatPlayerCStarts = (numOfRows - 1) * numOfColumns;
+        int indexThatPlayerDStarts = numOfRows * numOfColumns;
+
+        int randomIndex = 0;
+        boolean isIndexValid = false;
+        while (!isIndexValid) {
+            randomIndex = random.nextInt(indicesOfCellsThatWillHaveGold.size());
+            isIndexValid = randomIndex != indexThatPlayerAStarts
+                           && randomIndex != indexThatPlayerBStarts
+                           && randomIndex != indexThatPlayerCStarts
+                           && randomIndex != indexThatPlayerDStarts;
+        }
+        System.out.println("Index of randomly selected target cell: " + indicesOfCellsThatWillHaveGold.get(randomIndex));
+        return indicesOfCellsThatWillHaveGold.get(randomIndex);
     }
 }

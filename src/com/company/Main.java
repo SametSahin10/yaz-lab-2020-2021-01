@@ -12,7 +12,7 @@ public class Main {
             Board board = new Board(
                 10,
                 10,
-                10,
+                20,
                 10,
                 200,
                 4
