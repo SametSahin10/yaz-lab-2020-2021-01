@@ -71,7 +71,7 @@ public class Utils {
     }
 
     public static int selectIndexOfTargetCellRandomly(
-        int numOfRows, int numOfColumns, ArrayList<Integer> indicesOfCellsThatWillHaveGold
+        int numOfRows, int numOfColumns, ArrayList<Integer> indicesOfCellsThatHaveGold
     ) {
         int indexThatPlayerAStarts = 0;
         int indexThatPlayerBStarts = numOfColumns;
@@ -81,12 +81,14 @@ public class Utils {
         int randomIndex = 0;
         boolean isIndexValid = false;
         while (!isIndexValid) {
-            randomIndex = random.nextInt(indicesOfCellsThatWillHaveGold.size());
+            randomIndex = random.nextInt(indicesOfCellsThatHaveGold.size());
             isIndexValid = randomIndex != indexThatPlayerAStarts
                            && randomIndex != indexThatPlayerBStarts
                            && randomIndex != indexThatPlayerCStarts
                            && randomIndex != indexThatPlayerDStarts;
         }
-        return indicesOfCellsThatWillHaveGold.get(randomIndex);
+        int indexOfCellThatHaveGold = indicesOfCellsThatHaveGold.get(randomIndex);
+        indicesOfCellsThatHaveGold.removeIf(index -> index == indexOfCellThatHaveGold);
+        return indexOfCellThatHaveGold;
     }
 }

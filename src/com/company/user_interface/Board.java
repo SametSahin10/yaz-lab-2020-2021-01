@@ -43,11 +43,6 @@ public class Board {
     // They only will have the same values at first.
     private ArrayList<Integer> indicesOfCellsThatHaveGold;
 
-    private final Color targetedByAColor = new Color(255, 83, 96);
-    private final Color targetedByBColor = new Color(126, 231, 146);
-    private final Color targetedByCColor = new Color(255, 121, 85);
-    private final Color targetedByDColor = new Color(0, 212, 244);
-
     private int numOfPlayersInTheGame = 4;
 
     private Player playerA;
