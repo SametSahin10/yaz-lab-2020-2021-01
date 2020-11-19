@@ -1,6 +1,8 @@
 package com.company.user_interface;
 
 import com.company.models.Player;
+import com.company.utils.Icons;
+import com.company.utils.PlayerType;
 import com.company.utils.Utils;
 
 import javax.swing.*;
@@ -16,12 +18,12 @@ public class Board {
     private final int numOfCellsPlayersMoveEachTurn;
 
     public Board(
-            int numOfRows,
-            int numOfColumns,
-            double percentageOfCellsThatWillHaveGold,
-            double percentageOfCellsThatWillHaveSecretGold,
-            int totalAmountOfGoldEachUserWillHave,
-            int numOfCellsPlayersMoveEachTurn
+        int numOfRows,
+        int numOfColumns,
+        double percentageOfCellsThatWillHaveGold,
+        double percentageOfCellsThatWillHaveSecretGold,
+        int totalAmountOfGoldEachUserWillHave,
+        int numOfCellsPlayersMoveEachTurn
     ) {
         this.numOfRows = numOfRows;
         this.numOfColumns = numOfColumns;
@@ -41,12 +43,10 @@ public class Board {
     // They only will have the same values at first.
     private ArrayList<Integer> indicesOfCellsThatHaveGold;
 
-    final ImageIcon aLetterIcon = new ImageIcon(getClass().getResource("../assets/a_letter_icon.png"));
-    final ImageIcon bLetterIcon = new ImageIcon(getClass().getResource("../assets/b_letter_icon.png"));
-    final ImageIcon cLetterIcon = new ImageIcon(getClass().getResource("../assets/c_letter_icon.png"));
-    final ImageIcon dLetterIcon = new ImageIcon(getClass().getResource("../assets/d_letter_icon.png"));
-    final ImageIcon goldIcon = new ImageIcon(getClass().getResource("../assets/gold_icon.png"));
-    final ImageIcon chestIcon = new ImageIcon(getClass().getResource("../assets/chest_icon.png"));
+    private final Color targetedByAColor = new Color(255, 83, 96);
+    private final Color targetedByBColor = new Color(126, 231, 146);
+    private final Color targetedByCColor = new Color(255, 121, 85);
+    private final Color targetedByDColor = new Color(0, 212, 244);
 
     private int numOfPlayersInTheGame = 4;
 
@@ -116,20 +116,40 @@ public class Board {
                 );
                 if (i == 0 && j == 0) {
                     // First cell
-                    cell.setIcon(aLetterIcon);
-                    playerA = new Player(aLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
+                    cell.setIcon(Icons.aLetterIcon);
+                    playerA = new Player(
+                        PlayerType.A,
+                        totalAmountOfGoldEachUserWillHave,
+                        cell,
+                        null
+                    );
                 } else if (i == 0 && j == numOfColumns - 1) {
                     // Last cell of the first row
-                    cell.setIcon(bLetterIcon);
-                    playerB = new Player(bLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
+                    cell.setIcon(Icons.bLetterIcon);
+                    playerB = new Player(
+                        PlayerType.B,
+                        totalAmountOfGoldEachUserWillHave,
+                        cell,
+                        null
+                    );
                 } else if (i == numOfRows - 1 && j == 0) {
                     // First cell of the last row
-                    cell.setIcon(cLetterIcon);
-                    playerC = new Player(cLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
+                    cell.setIcon(Icons.cLetterIcon);
+                    playerC = new Player(
+                        PlayerType.C,
+                        totalAmountOfGoldEachUserWillHave,
+                        cell,
+                        null
+                    );
                 } else if (i == numOfRows - 1 && j == numOfColumns - 1) {
                     // Last cell
-                    cell.setIcon(dLetterIcon);
-                    playerD = new Player(dLetterIcon, totalAmountOfGoldEachUserWillHave, cell, null);
+                    cell.setIcon(Icons.dLetterIcon);
+                    playerD = new Player(
+                        PlayerType.D,
+                        totalAmountOfGoldEachUserWillHave,
+                        cell,
+                        null
+                    );
                 } else {
                     // A cell that is not a side.
 
@@ -139,7 +159,7 @@ public class Board {
                         boolean cellWillHaveGold = indicesOfCellsThatWillHaveGold.contains(currentIndex);
                         if (cellWillHaveGold) {
                             cell.setHasGold(true);
-                            cell.setIcon(goldIcon);
+                            cell.setIcon(Icons.goldIcon);
                             int amountOfGold = Utils.generateRandomAmountOfGold();
                             cell.setAmountOfGold(amountOfGold);
                             numOfCellsThatWillHaveGold--;
@@ -187,6 +207,7 @@ public class Board {
                     return;
                 }
             }
+
             int randomIndex = Utils.selectIndexOfTargetCellRandomly(
                     numOfRows, numOfColumns, indicesOfCellsThatHaveGold
             );
@@ -196,7 +217,12 @@ public class Board {
             Cell randomCell = cells[indexOfRow][indexOfColumn];
 
             playerA.setTargetCell(randomCell);
-            randomCell.setText("Targeted by A");
+            String randomCellText = randomCell.getText();
+            if (randomCellText.isEmpty()) {
+                randomCell.setText("A");
+            } else {
+                randomCell.setText(randomCellText + " " + "A");
+            }
             timerToMoveToTargetCellForA.start();
         });
 
@@ -245,7 +271,12 @@ public class Board {
             Cell randomCell = cells[indexOfRow][indexOfColumn];
 
             playerB.setTargetCell(randomCell);
-            randomCell.setText("Targeted by B");
+            String randomCellText = randomCell.getText();
+            if (randomCellText.isEmpty()) {
+                randomCell.setText("B");
+            } else {
+                randomCell.setText(randomCellText + " " + "A");
+            }
             timerToMoveToTargetCellForB.start();
         });
 
@@ -294,7 +325,12 @@ public class Board {
             Cell randomCell = cells[indexOfRow][indexOfColumn];
 
             playerC.setTargetCell(randomCell);
-            randomCell.setText("Targeted by C");
+            String randomCellText = randomCell.getText();
+            if (randomCellText.isEmpty()) {
+                randomCell.setText("C");
+            } else {
+                randomCell.setText(randomCellText + " " + "A");
+            }
             timerToMoveToTargetCellForC.start();
         });
 
@@ -345,7 +381,13 @@ public class Board {
             Cell randomCell = cells[indexOfRow][indexOfColumn];
 
             playerD.setTargetCell(randomCell);
-            randomCell.setText("Targeted by D");
+            String randomCellText = randomCell.getText();
+            if (randomCellText.isEmpty()) {
+                randomCell.setText("D");
+            } else {
+                randomCell.setText(randomCellText + " " + "A");
+            }
+
             timerToMoveToTargetCellForD.start();
         });
 
@@ -392,7 +434,7 @@ public class Board {
 
     private void endGameForPlayer(Player player) {
         Cell currentCell = player.getCurrentCell();
-        currentCell.clear();
+        currentCell.clearText(player.getPlayerType());
         numOfPlayersInTheGame--;
     }
 

@@ -1,20 +1,31 @@
 package com.company.models;
 
 import com.company.user_interface.Cell;
+import com.company.utils.Icons;
+import com.company.utils.PlayerType;
 
 import javax.swing.*;
 
 public class Player {
-    private ImageIcon icon;
+    private PlayerType playerType;
     private int totalAmountOfGold;
     private Cell currentCell;
     private Cell targetCell;
 
-    public Player(ImageIcon icon, int totalAmountOfGold, Cell currentCell, Cell targetCell) {
-        this.icon = icon;
+    public Player(
+        PlayerType playerType,
+        int totalAmountOfGold,
+        Cell currentCell,
+        Cell targetCell
+    ) {
+        this.playerType = playerType;
         this.totalAmountOfGold = totalAmountOfGold;
         this.currentCell = currentCell;
         this.targetCell = targetCell;
+    }
+
+    public PlayerType getPlayerType() {
+        return playerType;
     }
 
     public int getTotalAmountOfGold() {
@@ -58,16 +69,57 @@ public class Player {
             if (newCell.equals(targetCell)) {
                 // Player has reached to its target.
                 System.out.println("Player has reached to its target.");
-                targetCell.setText("");
+                newCell.clearText(playerType);
                 targetCell = null;
             }
+        } else {
+            // At this point, the cell does not have gold.
+            // So, it is safe to check if there's secret gold.
+            // Secret golds may only be at the cells where
+            // their golds have already been taken.
+            if (newCell.isHasSecretGold()) {
+                // Player moved to a cell where
+                // there is secret gold available to get.
+                increaseTheAmountOfGold(newCell.getAmountOfSecretGold());
+                newCell.setAmountOfSecretGold(0);
+                newCell.setHasSecretGold(false);
+            }
         }
-        newCell.setIcon(icon);
-        currentCell.clear();
+
+        setPlayerIcon(newCell);
+
+        if (currentCell.isHasSecretGold()) {
+            // Player moved to a cell where there is secret gold hidden.
+            // Set secret gold visible to other players.
+            newCell.setSecretGoldVisible(true);
+            currentCell.setIcon(Icons.chestIcon);
+        } else {
+            currentCell.clearIcon();
+        }
+        currentCell.clearText(playerType);
         currentCell = newCell;
     }
 
     public void moveToTargetCell() {
         move(targetCell);
+    }
+
+    public void setPlayerIcon(Cell cell) {
+        switch (playerType) {
+            case A:
+                cell.setIcon(Icons.aLetterIcon);
+                break;
+            case B:
+                cell.setIcon(Icons.bLetterIcon);
+                break;
+            case C:
+                cell.setIcon(Icons.cLetterIcon);
+                break;
+            case D:
+                cell.setIcon(Icons.dLetterIcon);
+                break;
+            default:
+                cell.setIcon(null);
+        }
     }
 }
