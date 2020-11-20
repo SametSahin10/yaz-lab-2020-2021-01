@@ -15,6 +15,7 @@ public class Board {
     private final double percentageOfCellsThatWillHaveGold;
     private final double percentageOfCellsThatWillHaveSecretGold;
     private final int totalAmountOfGoldEachUserWillHave;
+    private final int numOfStepsToTakeOnEachMove;
     private final int costOfEachMoveForPlayerA;
     private final int costOfEachMoveForPlayerB;
     private final int costOfEachMoveForPlayerC;
@@ -30,6 +31,7 @@ public class Board {
         double percentageOfCellsThatWillHaveGold,
         double percentageOfCellsThatWillHaveSecretGold,
         int totalAmountOfGoldEachUserWillHave,
+        int numOfStepsToTakeOnEachMove,
         int costOfEachMoveForPlayerA,
         int costOfEachMoveForPlayerB,
         int costOfEachMoveForPlayerC,
@@ -44,6 +46,7 @@ public class Board {
         this.percentageOfCellsThatWillHaveGold = percentageOfCellsThatWillHaveGold;
         this.percentageOfCellsThatWillHaveSecretGold = percentageOfCellsThatWillHaveSecretGold;
         this.totalAmountOfGoldEachUserWillHave = totalAmountOfGoldEachUserWillHave;
+        this.numOfStepsToTakeOnEachMove = numOfStepsToTakeOnEachMove;
         this.costOfEachMoveForPlayerA = costOfEachMoveForPlayerA;
         this.costOfEachMoveForPlayerB = costOfEachMoveForPlayerB;
         this.costOfEachMoveForPlayerC = costOfEachMoveForPlayerC;
@@ -137,6 +140,7 @@ public class Board {
                         PlayerType.A,
                         costOfEachMoveForPlayerA,
                         costOfSettingTargetForPlayerA,
+                        numOfStepsToTakeOnEachMove,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -148,6 +152,7 @@ public class Board {
                         PlayerType.B,
                         costOfEachMoveForPlayerB,
                         costOfSettingTargetForPlayerB,
+                        numOfStepsToTakeOnEachMove,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -159,6 +164,7 @@ public class Board {
                         PlayerType.C,
                         costOfEachMoveForPlayerC,
                         costOfSettingTargetForPlayerC,
+                        numOfStepsToTakeOnEachMove,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -170,6 +176,7 @@ public class Board {
                         PlayerType.D,
                         costOfEachMoveForPlayerD,
                         costOfSettingTargetForPlayerD,
+                        numOfStepsToTakeOnEachMove,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null

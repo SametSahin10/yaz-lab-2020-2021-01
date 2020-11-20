@@ -8,6 +8,7 @@ public class Player {
     private final PlayerType playerType;
     private final int costOfEachMove;
     private final int costOfSettingTarget;
+    private final int numOfStepsToTakeOnEachMove;
     private int totalAmountOfGold;
     private int totalAmountOfGoldSpent;
     private int totalAmountOfGoldCollected;
@@ -19,6 +20,7 @@ public class Player {
         PlayerType playerType,
         int costOfEachMove,
         int costOfSettingTarget,
+        int numOfStepsToTakeOnEachMove,
         int totalAmountOfGold,
         Cell currentCell,
         Cell targetCell
@@ -26,6 +28,7 @@ public class Player {
         this.playerType = playerType;
         this.costOfEachMove = costOfEachMove;
         this.costOfSettingTarget = costOfSettingTarget;
+        this.numOfStepsToTakeOnEachMove = numOfStepsToTakeOnEachMove;
         this.totalAmountOfGold = totalAmountOfGold;
         this.totalAmountOfGoldSpent = 0;
         this.totalAmountOfGoldCollected = 0;
@@ -84,19 +87,23 @@ public class Player {
     }
 
     public void setTargetCell(Cell targetCell) {
+        decreaseTheAmountOfGold(costOfSettingTarget);
         this.targetCell = targetCell;
     }
 
     public void increaseTheAmountOfGold(int amount) {
+        this.totalAmountOfGoldCollected += amount;
         this.totalAmountOfGold += amount;
     }
 
     public void decreaseTheAmountOfGold(int amount) {
+        this.totalAmountOfGoldSpent += amount;
         this.totalAmountOfGold -= amount;
     }
 
     public void move(Cell newCell) {
         System.out.println("Moving to " + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn());
+        totalAmountOfSteps++;
         decreaseTheAmountOfGold(costOfEachMove);
         if (newCell.isHasGold()) {
             increaseTheAmountOfGold(newCell.getAmountOfGold());
