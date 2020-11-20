@@ -15,7 +15,14 @@ public class Board {
     private final double percentageOfCellsThatWillHaveGold;
     private final double percentageOfCellsThatWillHaveSecretGold;
     private final int totalAmountOfGoldEachUserWillHave;
-    private final int numOfCellsPlayersMoveEachTurn;
+    private final int costOfEachMoveForPlayerA;
+    private final int costOfEachMoveForPlayerB;
+    private final int costOfEachMoveForPlayerC;
+    private final int costOfEachMoveForPlayerD;
+    private final int costOfSettingTargetForPlayerA;
+    private final int costOfSettingTargetForPlayerB;
+    private final int costOfSettingTargetForPlayerC;
+    private final int costOfSettingTargetForPlayerD;
 
     public Board(
         int numOfRows,
@@ -23,14 +30,28 @@ public class Board {
         double percentageOfCellsThatWillHaveGold,
         double percentageOfCellsThatWillHaveSecretGold,
         int totalAmountOfGoldEachUserWillHave,
-        int numOfCellsPlayersMoveEachTurn
+        int costOfEachMoveForPlayerA,
+        int costOfEachMoveForPlayerB,
+        int costOfEachMoveForPlayerC,
+        int costOfEachMoveForPlayerD,
+        int costOfSettingTargetForPlayerA,
+        int costOfSettingTargetForPlayerB,
+        int costOfSettingTargetForPlayerC,
+        int costOfSettingTargetForPlayerD
     ) {
         this.numOfRows = numOfRows;
         this.numOfColumns = numOfColumns;
         this.percentageOfCellsThatWillHaveGold = percentageOfCellsThatWillHaveGold;
         this.percentageOfCellsThatWillHaveSecretGold = percentageOfCellsThatWillHaveSecretGold;
         this.totalAmountOfGoldEachUserWillHave = totalAmountOfGoldEachUserWillHave;
-        this.numOfCellsPlayersMoveEachTurn = numOfCellsPlayersMoveEachTurn;
+        this.costOfEachMoveForPlayerA = costOfEachMoveForPlayerA;
+        this.costOfEachMoveForPlayerB = costOfEachMoveForPlayerB;
+        this.costOfEachMoveForPlayerC = costOfEachMoveForPlayerC;
+        this.costOfEachMoveForPlayerD = costOfEachMoveForPlayerD;
+        this.costOfSettingTargetForPlayerA = costOfSettingTargetForPlayerA;
+        this.costOfSettingTargetForPlayerB = costOfSettingTargetForPlayerB;
+        this.costOfSettingTargetForPlayerC = costOfSettingTargetForPlayerC;
+        this.costOfSettingTargetForPlayerD = costOfSettingTargetForPlayerD;
         initializeGUI();
     }
 
@@ -50,10 +71,10 @@ public class Board {
     private Player playerC;
     private Player playerD;
 
-    private boolean playerAselectedATarget = false;
-    private boolean playerBselectedATarget = false;
-    private boolean playerCSelectedATarget = false;
-    private boolean playerDSelectedATarget = false;
+    private final boolean playerAselectedATarget = false;
+    private final boolean playerBselectedATarget = false;
+    private final boolean playerCSelectedATarget = false;
+    private final boolean playerDSelectedATarget = false;
 
     private Timer timerToSelectTargetCellForA;
     private Timer timerToSelectTargetCellForB;
@@ -114,6 +135,8 @@ public class Board {
                     cell.setIcon(Icons.aLetterIcon);
                     playerA = new Player(
                         PlayerType.A,
+                        costOfEachMoveForPlayerA,
+                        costOfSettingTargetForPlayerA,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -123,6 +146,8 @@ public class Board {
                     cell.setIcon(Icons.bLetterIcon);
                     playerB = new Player(
                         PlayerType.B,
+                        costOfEachMoveForPlayerB,
+                        costOfSettingTargetForPlayerB,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -132,6 +157,8 @@ public class Board {
                     cell.setIcon(Icons.cLetterIcon);
                     playerC = new Player(
                         PlayerType.C,
+                        costOfEachMoveForPlayerC,
+                        costOfSettingTargetForPlayerC,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -141,6 +168,8 @@ public class Board {
                     cell.setIcon(Icons.dLetterIcon);
                     playerD = new Player(
                         PlayerType.D,
+                        costOfEachMoveForPlayerD,
+                        costOfSettingTargetForPlayerD,
                         totalAmountOfGoldEachUserWillHave,
                         cell,
                         null
@@ -224,7 +253,6 @@ public class Board {
         timerToMoveToTargetCellForA = new Timer(3000, e -> {
             System.out.println("Player A is moving");
             playerA.moveToTargetCell();
-            playerA.decreaseTheAmountOfGold(20);
             if (playerA.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player A");
                 endGameForPlayer(playerA);
@@ -278,7 +306,6 @@ public class Board {
         timerToMoveToTargetCellForB = new Timer(3000, e -> {
             System.out.println("Player B is moving");
             playerB.moveToTargetCell();
-            playerB.decreaseTheAmountOfGold(20);
             if (playerB.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player B");
                 endGameForPlayer(playerB);
@@ -332,7 +359,6 @@ public class Board {
         timerToMoveToTargetCellForC = new Timer(3000, e -> {
             System.out.println("Player C is moving");
             playerC.moveToTargetCell();
-            playerC.decreaseTheAmountOfGold(20);
             System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
             if (playerC.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player C");
@@ -389,7 +415,6 @@ public class Board {
         timerToMoveToTargetCellForD = new Timer(3000, e -> {
             System.out.println("Player D is moving");
             playerD.moveToTargetCell();
-            playerD.decreaseTheAmountOfGold(20);
             if (playerD.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player D");
                 endGameForPlayer(playerD);

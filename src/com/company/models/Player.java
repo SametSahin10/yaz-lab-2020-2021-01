@@ -4,22 +4,32 @@ import com.company.user_interface.Cell;
 import com.company.utils.Icons;
 import com.company.utils.PlayerType;
 
-import javax.swing.*;
-
 public class Player {
-    private PlayerType playerType;
+    private final PlayerType playerType;
+    private final int costOfEachMove;
+    private final int costOfSettingTarget;
     private int totalAmountOfGold;
+    private int totalAmountOfGoldSpent;
+    private int totalAmountOfGoldCollected;
+    private int totalAmountOfSteps;
     private Cell currentCell;
     private Cell targetCell;
 
     public Player(
         PlayerType playerType,
+        int costOfEachMove,
+        int costOfSettingTarget,
         int totalAmountOfGold,
         Cell currentCell,
         Cell targetCell
     ) {
         this.playerType = playerType;
+        this.costOfEachMove = costOfEachMove;
+        this.costOfSettingTarget = costOfSettingTarget;
         this.totalAmountOfGold = totalAmountOfGold;
+        this.totalAmountOfGoldSpent = 0;
+        this.totalAmountOfGoldCollected = 0;
+        this.totalAmountOfSteps = 0;
         this.currentCell = currentCell;
         this.targetCell = targetCell;
     }
@@ -36,6 +46,30 @@ public class Player {
         this.totalAmountOfGold = totalAmountOfGold;
     }
 
+    public int getTotalAmountOfGoldSpent() {
+        return totalAmountOfGoldSpent;
+    }
+
+    public void setTotalAmountOfGoldSpent(int totalAmountOfGoldSpent) {
+        this.totalAmountOfGoldSpent = totalAmountOfGoldSpent;
+    }
+
+    public int getTotalAmountOfGoldCollected() {
+        return totalAmountOfGoldCollected;
+    }
+
+    public void setTotalAmountOfGoldCollected(int totalAmountOfGoldCollected) {
+        this.totalAmountOfGoldCollected = totalAmountOfGoldCollected;
+    }
+
+    public int getTotalAmountOfSteps() {
+        return totalAmountOfSteps;
+    }
+
+    public void setTotalAmountOfSteps(int totalAmountOfSteps) {
+        this.totalAmountOfSteps = totalAmountOfSteps;
+    }
+
     public Cell getCurrentCell() {
         return currentCell;
     }
@@ -45,6 +79,7 @@ public class Player {
     }
 
     public Cell getTargetCell() {
+        decreaseTheAmountOfGold(costOfSettingTarget);
         return targetCell;
     }
 
@@ -62,6 +97,7 @@ public class Player {
 
     public void move(Cell newCell) {
         System.out.println("Moving to " + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn());
+        decreaseTheAmountOfGold(costOfEachMove);
         if (newCell.isHasGold()) {
             increaseTheAmountOfGold(newCell.getAmountOfGold());
             newCell.setAmountOfGold(0);

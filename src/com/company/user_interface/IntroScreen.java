@@ -10,14 +10,13 @@ public class IntroScreen {
     private JTextArea percentageOfCellsThatWillHaveGoldTA;
     private JTextArea percentageOfCellsThatWillHaveSecretGoldTA;
     private JTextArea totalAmountOfGoldEachUserWillHaveTA;
-    private JTextArea numOfCellsPlayersMoveEachTurnTA;
-    private JTextArea costOfMoveForPlayerATA;
+    private JTextArea costOfEachMoveForPlayerATA;
     private JTextArea costOfSettingTargetForPlayerATA;
-    private JTextArea costOfMoveForPlayerBTA;
+    private JTextArea costOfEachMoveForPlayerBTA;
     private JTextArea costOfSettingTargetForPlayerBTA;
-    private JTextArea costOfMoveForPlayerCTA;
+    private JTextArea costOfEachMoveForPlayerCTA;
     private JTextArea costOfSettingTargetForPlayerCTA;
-    private JTextArea costOfMoveForPlayerDTA;
+    private JTextArea costOfEachMoveForPlayerDTA;
     private JTextArea costOfSettingTargetForPlayerDTA;
     private JButton startGameButton;
 
@@ -50,36 +49,32 @@ public class IntroScreen {
         return totalAmountOfGoldEachUserWillHaveTA;
     }
 
-    public JTextArea getNumOfCellsPlayersMoveEachTurnTA() {
-        return numOfCellsPlayersMoveEachTurnTA;
-    }
-
-    public JTextArea getCostOfMoveForPlayerATA() {
-        return costOfMoveForPlayerATA;
+    public JTextArea getCostOfEachMoveForPlayerATA() {
+        return costOfEachMoveForPlayerATA;
     }
 
     public JTextArea getCostOfSettingTargetForPlayerATA() {
         return costOfSettingTargetForPlayerATA;
     }
 
-    public JTextArea getCostOfMoveForPlayerBTA() {
-        return costOfMoveForPlayerBTA;
+    public JTextArea getCostOfEachMoveForPlayerBTA() {
+        return costOfEachMoveForPlayerBTA;
     }
 
     public JTextArea getCostOfSettingTargetForPlayerBTA() {
         return costOfSettingTargetForPlayerBTA;
     }
 
-    public JTextArea getCostOfMoveForPlayerCTA() {
-        return costOfMoveForPlayerCTA;
+    public JTextArea getCostOfEachMoveForPlayerCTA() {
+        return costOfEachMoveForPlayerCTA;
     }
 
     public JTextArea getCostOfSettingTargetForPlayerCTA() {
         return costOfSettingTargetForPlayerCTA;
     }
 
-    public JTextArea getCostOfMoveForPlayerDTA() {
-        return costOfMoveForPlayerDTA;
+    public JTextArea getCostOfEachMoveForPlayerDTA() {
+        return costOfEachMoveForPlayerDTA;
     }
 
     public JTextArea getCostOfSettingTargetForPlayerDTA() {
@@ -94,7 +89,6 @@ public class IntroScreen {
         JLabel percentageOfCellsThatWillHaveGoldLabel = new JLabel("percentage of cells that will have gold: ");
         JLabel percentageOfCellsThatWillHaveSecretGoldLabel = new JLabel("percentage of cells that will have secret gold: ");
         JLabel totalAmountOfGoldEachUserWillHaveLabel = new JLabel("Total amount of gold each user will have: ");
-        JLabel numOfCellsPlayersMoveEachTurnLabel = new JLabel("Number of cells players move each turn: ");
         JLabel costOfAMoveForPlayerALabel = new JLabel("Cost of a move for player A: ");
         JLabel costOfSettingTargetForPlayerALabel = new JLabel("Cost of setting target for player A: ");
         JLabel costOfAMoveForPlayerBLabel = new JLabel("Cost of a move for player B: ");
@@ -110,18 +104,17 @@ public class IntroScreen {
         percentageOfCellsThatWillHaveGoldTA = new JTextArea("20");
         percentageOfCellsThatWillHaveSecretGoldTA = new JTextArea("10");
         totalAmountOfGoldEachUserWillHaveTA = new JTextArea("200");
-        numOfCellsPlayersMoveEachTurnTA = new JTextArea("3");
 
-        costOfMoveForPlayerATA = new JTextArea("5");
+        costOfEachMoveForPlayerATA = new JTextArea("5");
         costOfSettingTargetForPlayerATA = new JTextArea("3");
 
-        costOfMoveForPlayerBTA = new JTextArea("5");
+        costOfEachMoveForPlayerBTA = new JTextArea("5");
         costOfSettingTargetForPlayerBTA = new JTextArea("10");
 
-        costOfMoveForPlayerCTA = new JTextArea("5");
+        costOfEachMoveForPlayerCTA = new JTextArea("5");
         costOfSettingTargetForPlayerCTA = new JTextArea("15");
 
-        costOfMoveForPlayerDTA = new JTextArea("5");
+        costOfEachMoveForPlayerDTA = new JTextArea("5");
         costOfSettingTargetForPlayerDTA = new JTextArea("20");
 
         introScreenPanel.add(numOfRowsLabel);
@@ -139,29 +132,27 @@ public class IntroScreen {
         introScreenPanel.add(totalAmountOfGoldEachUserWillHaveLabel);
         introScreenPanel.add(totalAmountOfGoldEachUserWillHaveTA);
 
-        introScreenPanel.add(numOfCellsPlayersMoveEachTurnLabel);
-        introScreenPanel.add(numOfCellsPlayersMoveEachTurnTA);
 
         introScreenPanel.add(costOfAMoveForPlayerALabel);
-        introScreenPanel.add(costOfMoveForPlayerATA);
+        introScreenPanel.add(costOfEachMoveForPlayerATA);
 
         introScreenPanel.add(costOfSettingTargetForPlayerALabel);
         introScreenPanel.add(costOfSettingTargetForPlayerATA);
 
         introScreenPanel.add(costOfAMoveForPlayerBLabel);
-        introScreenPanel.add(costOfMoveForPlayerBTA);
+        introScreenPanel.add(costOfEachMoveForPlayerBTA);
 
         introScreenPanel.add(costOfSettingTargetForPlayerBLabel);
         introScreenPanel.add(costOfSettingTargetForPlayerBTA);
 
         introScreenPanel.add(costOfAMoveForPlayerCLabel);
-        introScreenPanel.add(costOfMoveForPlayerCTA);
+        introScreenPanel.add(costOfEachMoveForPlayerCTA);
 
         introScreenPanel.add(costOfSettingTargetForPlayerCLabel);
         introScreenPanel.add(costOfSettingTargetForPlayerCTA);
 
         introScreenPanel.add(costOfAMoveForPlayerDLabel);
-        introScreenPanel.add(costOfMoveForPlayerDTA);
+        introScreenPanel.add(costOfEachMoveForPlayerDTA);
 
         introScreenPanel.add(costOfSettingTargetForPlayerDLabel);
         introScreenPanel.add(costOfSettingTargetForPlayerDTA);
