@@ -33,21 +33,6 @@ public class Cell extends JLabel {
         this.secretGoldVisible = showSecretGold;
     }
 
-    @Override
-    public Font getFont() {
-//        InputStream inputStream = Board.class.getResourceAsStream("../assets/fonts/SourceSansPro-Light.ttf");
-//        try {
-//            Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-//            font = font.deriveFont(8f);
-//            return font;
-//        } catch (FontFormatException | IOException exception) {
-//            exception.printStackTrace();
-//            return super.getFont();
-//        }
-        // TODO: Use the code above when using the font somewhere else in the app.
-        return super.getFont();
-    }
-
     public int getIndexOfRow() {
         return indexOfRow;
     }

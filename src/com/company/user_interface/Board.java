@@ -10,6 +10,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Board {
+    // Use the Frame instance below to set the GameOverScreen visible.
+    private Frame frame;
     private final int numOfRows;
     private final int numOfColumns;
     private final double percentageOfCellsThatWillHaveGold;
@@ -26,6 +28,7 @@ public class Board {
     private final int costOfSettingTargetForPlayerD;
 
     public Board(
+        Frame frame,
         int numOfRows,
         int numOfColumns,
         double percentageOfCellsThatWillHaveGold,
@@ -41,6 +44,7 @@ public class Board {
         int costOfSettingTargetForPlayerC,
         int costOfSettingTargetForPlayerD
     ) {
+        this.frame = frame;
         this.numOfRows = numOfRows;
         this.numOfColumns = numOfColumns;
         this.percentageOfCellsThatWillHaveGold = percentageOfCellsThatWillHaveGold;
@@ -267,6 +271,7 @@ public class Board {
             int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
             if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
                 System.out.println("Game over");
+                endGameForEveryone();
                 return;
             }
 
@@ -320,6 +325,7 @@ public class Board {
             int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
             if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
                 System.out.println("Game over");
+                endGameForEveryone();
                 return;
             }
 
@@ -375,6 +381,7 @@ public class Board {
             int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
             if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
                 System.out.println("Game over");
+                endGameForEveryone();
                 return;
             }
 
@@ -429,6 +436,7 @@ public class Board {
             int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
             if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
                 System.out.println("Game over");
+                endGameForEveryone();
                 return;
             }
 
@@ -463,6 +471,12 @@ public class Board {
         Cell currentCell = player.getCurrentCell();
         currentCell.clearText(player.getPlayerType());
         numOfPlayersInTheGame--;
+    }
+
+    private void endGameForEveryone() {
+        GameOverScreen gameOverScreen = new GameOverScreen(playerA, playerB, playerC, playerD);
+        frame.remove(boardPanel);
+        frame.add(gameOverScreen.getGameOverPanel());
     }
 
     public JPanel getBoardPanel() {

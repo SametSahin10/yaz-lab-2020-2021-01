@@ -10,6 +10,7 @@ public class IntroScreen {
     private JTextArea percentageOfCellsThatWillHaveGoldTA;
     private JTextArea percentageOfCellsThatWillHaveSecretGoldTA;
     private JTextArea totalAmountOfGoldEachUserWillHaveTA;
+    private JTextArea numOfStepsToTakeOnEachMoveTA;
     private JTextArea costOfEachMoveForPlayerATA;
     private JTextArea costOfSettingTargetForPlayerATA;
     private JTextArea costOfEachMoveForPlayerBTA;
@@ -49,6 +50,10 @@ public class IntroScreen {
         return totalAmountOfGoldEachUserWillHaveTA;
     }
 
+    public JTextArea getNumOfStepsToTakeOnEachMoveTA() {
+        return numOfStepsToTakeOnEachMoveTA;
+    }
+
     public JTextArea getCostOfEachMoveForPlayerATA() {
         return costOfEachMoveForPlayerATA;
     }
@@ -86,9 +91,10 @@ public class IntroScreen {
 
         JLabel numOfRowsLabel = new JLabel("Number of rows: ");
         JLabel numOfColumnsLabel = new JLabel("Number of columns: ");
-        JLabel percentageOfCellsThatWillHaveGoldLabel = new JLabel("percentage of cells that will have gold: ");
-        JLabel percentageOfCellsThatWillHaveSecretGoldLabel = new JLabel("percentage of cells that will have secret gold: ");
+        JLabel percentageOfCellsThatWillHaveGoldLabel = new JLabel("Percentage of cells that will have gold: ");
+        JLabel percentageOfCellsThatWillHaveSecretGoldLabel = new JLabel("Percentage of cells that will have secret gold: ");
         JLabel totalAmountOfGoldEachUserWillHaveLabel = new JLabel("Total amount of gold each user will have: ");
+        JLabel numOfStepsToTakeOnEachMoveLabel = new JLabel("Number of steps to take on each move: ");
         JLabel costOfAMoveForPlayerALabel = new JLabel("Cost of a move for player A: ");
         JLabel costOfSettingTargetForPlayerALabel = new JLabel("Cost of setting target for player A: ");
         JLabel costOfAMoveForPlayerBLabel = new JLabel("Cost of a move for player B: ");
@@ -104,6 +110,7 @@ public class IntroScreen {
         percentageOfCellsThatWillHaveGoldTA = new JTextArea("20");
         percentageOfCellsThatWillHaveSecretGoldTA = new JTextArea("10");
         totalAmountOfGoldEachUserWillHaveTA = new JTextArea("200");
+        numOfStepsToTakeOnEachMoveTA = new JTextArea("3");
 
         costOfEachMoveForPlayerATA = new JTextArea("5");
         costOfSettingTargetForPlayerATA = new JTextArea("3");
@@ -132,6 +139,8 @@ public class IntroScreen {
         introScreenPanel.add(totalAmountOfGoldEachUserWillHaveLabel);
         introScreenPanel.add(totalAmountOfGoldEachUserWillHaveTA);
 
+        introScreenPanel.add(numOfStepsToTakeOnEachMoveLabel);
+        introScreenPanel.add(numOfStepsToTakeOnEachMoveTA);
 
         introScreenPanel.add(costOfAMoveForPlayerALabel);
         introScreenPanel.add(costOfEachMoveForPlayerATA);

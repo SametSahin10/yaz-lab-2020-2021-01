@@ -92,13 +92,18 @@ public class Player {
     }
 
     public void increaseTheAmountOfGold(int amount) {
-        this.totalAmountOfGoldCollected += amount;
-        this.totalAmountOfGold += amount;
+        totalAmountOfGoldCollected += amount;
+        totalAmountOfGold += amount;
     }
 
     public void decreaseTheAmountOfGold(int amount) {
-        this.totalAmountOfGoldSpent += amount;
-        this.totalAmountOfGold -= amount;
+        totalAmountOfGoldSpent += amount;
+        totalAmountOfGold -= amount;
+        // The minimum value of totalAmountOfGold is zero.
+        // Do not set it to negative values;
+        if (totalAmountOfGold < 0) {
+            totalAmountOfGold = 0;
+        }
     }
 
     public void move(Cell newCell) {

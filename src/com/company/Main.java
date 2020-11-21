@@ -4,6 +4,8 @@ import com.company.user_interface.Board;
 import com.company.user_interface.IntroScreen;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     static IntroScreen introScreen;
@@ -15,11 +17,13 @@ public class Main {
             JButton startGameButton = new JButton("Start");
             startGameButton.addActionListener(e -> {
                 Board board = new Board(
+                    frame,
                     Integer.parseInt(introScreen.getNumOfRowsTA().getText()),
                     Integer.parseInt(introScreen.getNumOfColumnsTA().getText()),
                     Integer.parseInt(introScreen.getPercentageOfCellsThatWillHaveGoldTA().getText()),
                     Integer.parseInt(introScreen.getPercentageOfCellsThatWillHaveSecretGoldTA().getText()),
                     Integer.parseInt(introScreen.getTotalAmountOfGoldEachUserWillHaveTA().getText()),
+                    Integer.parseInt(introScreen.getNumOfStepsToTakeOnEachMoveTA().getText()),
                     Integer.parseInt(introScreen.getCostOfEachMoveForPlayerATA().getText()),
                     Integer.parseInt(introScreen.getCostOfEachMoveForPlayerBTA().getText()),
                     Integer.parseInt(introScreen.getCostOfEachMoveForPlayerCTA().getText()),
@@ -32,6 +36,13 @@ public class Main {
                 frame.add(board.getBoardPanel());
                 frame.remove(introScreen.getIntroScreenPanel());
             });
+
+            ActionListener gameOverActionListener = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            };
 
             introScreen = new IntroScreen(startGameButton);
             frame.add(introScreen.getIntroScreenPanel());
