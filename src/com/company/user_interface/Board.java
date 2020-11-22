@@ -530,26 +530,31 @@ public class Board {
 
     private Cell findTargetCellForPlayerC(Cell[][] cells) {
         Cell targetCell = null;
-        int shortestDistanceBetweenCells = 0;
+        // Profit point is the product of (1 / distance) and the amount of gold.
+        double highestProfitPoint = 0;
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 if (playerC.getCurrentCell().equals(cells[i][j])) {
                     // Do not take currentCell into account while finding target cell.
                     continue;
                 }
-                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
+                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold();
                 if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
                     // First cell that has gold is the target cell.
                     // The initial cell to start comparison.
                     if (targetCell == null) {
                         targetCell = cells[i][j];
-                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
-                            playerC.getCurrentCell(), targetCell
-                        );
                     }
                     int distance = calculateDistanceBetweenTwoCells(playerC.getCurrentCell(), cells[i][j]);
-                    if (distance < shortestDistanceBetweenCells) {
-                        shortestDistanceBetweenCells = distance;
+                    double profitPoint;
+                    if (cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible()) {
+                        // Use the amount of secret gold if secret gold is present and available.
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfSecretGold();
+                    } else {
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfGold();
+                    }
+                    if (profitPoint > highestProfitPoint) {
+                        highestProfitPoint = profitPoint;
                         targetCell = cells[i][j];
                     }
                 }
