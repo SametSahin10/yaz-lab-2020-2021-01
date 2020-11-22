@@ -276,6 +276,7 @@ public class Board {
             count++;
             if (count == numOfStepsToTakeOnEachMove || playerA.getTargetCell() == null) {
                 // Player A either used all of its steps or reached to its target.
+                playerA.decreaseTheAmountOfGold(costOfEachMoveForPlayerA);
                 System.out.println("Stopping timerToMoveToTargetCellForA");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
@@ -332,8 +333,9 @@ public class Board {
             count++;
             if (count == numOfStepsToTakeOnEachMove || playerB.getTargetCell() == null) {
                 // Player B either used all of its steps or reached to its target.
-                ((Timer) actionEvent.getSource()).stop();
+                playerB.decreaseTheAmountOfGold(costOfEachMoveForPlayerB);
                 System.out.println("Stopping timerToMoveToTargetCellForB");
+                ((Timer) actionEvent.getSource()).stop();
                 count = 0;
                 timerToMoveToTargetCellForC.start();
             }
@@ -388,6 +390,7 @@ public class Board {
             count++;
             if (count == numOfStepsToTakeOnEachMove || playerC.getTargetCell() == null) {
                 // Player C either used all of its steps or reached to its target.
+                playerC.decreaseTheAmountOfGold(costOfEachMoveForPlayerC);
                 System.out.println("Stopping timerToMoveToTargetCellForC");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
@@ -444,6 +447,7 @@ public class Board {
             count++;
             if (count == numOfStepsToTakeOnEachMove || playerD.getTargetCell() == null) {
                 // Player D either used all of its steps or reached to its target.
+                playerB.decreaseTheAmountOfGold(costOfEachMoveForPlayerB);
                 System.out.println("Stopping timerToMoveToTargetCellForD");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
@@ -491,7 +495,8 @@ public class Board {
 
     private Cell findTargetCellForPlayerB(Cell[][] cells) {
         Cell targetCell = null;
-        int shortestDistanceBetweenCells = 0;
+        // Profit point is the product of (1 / distance) and the amount of gold.
+        double highestProfitPoint = 0;
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
                 if (playerB.getCurrentCell().equals(cells[i][j])) {
@@ -504,13 +509,17 @@ public class Board {
                     // The initial cell to start comparison.
                     if (targetCell == null) {
                         targetCell = cells[i][j];
-                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
-                            playerB.getCurrentCell(), targetCell
-                        );
                     }
                     int distance = calculateDistanceBetweenTwoCells(playerB.getCurrentCell(), cells[i][j]);
-                    if (distance < shortestDistanceBetweenCells) {
-                        shortestDistanceBetweenCells = distance;
+                    double profitPoint;
+                    if (cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible()) {
+                        // Use the amount of secret gold if secret gold is present and available.
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfSecretGold();
+                    } else {
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfGold();
+                    }
+                    if (profitPoint > highestProfitPoint) {
+                        highestProfitPoint = profitPoint;
                         targetCell = cells[i][j];
                     }
                 }

@@ -82,7 +82,6 @@ public class Player {
     }
 
     public Cell getTargetCell() {
-        decreaseTheAmountOfGold(costOfSettingTarget);
         return targetCell;
     }
 
@@ -108,7 +107,6 @@ public class Player {
 
     public void move(Cell newCell) {
         totalAmountOfSteps++;
-        decreaseTheAmountOfGold(costOfEachMove);
         if (newCell.isHasGold()) {
             increaseTheAmountOfGold(newCell.getAmountOfGold());
             newCell.setAmountOfGold(0);

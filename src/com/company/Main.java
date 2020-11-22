@@ -33,16 +33,9 @@ public class Main {
                     Integer.parseInt(introScreen.getCostOfSettingTargetForPlayerCTA().getText()),
                     Integer.parseInt(introScreen.getCostOfSettingTargetForPlayerDTA().getText())
                 );
-                frame.add(board.getBoardPanel());
                 frame.remove(introScreen.getIntroScreenPanel());
+                frame.add(board.getBoardPanel());
             });
-
-            ActionListener gameOverActionListener = new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-
-                }
-            };
 
             introScreen = new IntroScreen(startGameButton);
             frame.add(introScreen.getIntroScreenPanel());
