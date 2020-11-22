@@ -696,7 +696,6 @@ public class Board {
 
     private void endGameForPlayer(Player player) {
         Cell currentCell = player.getCurrentCell();
-        currentCell.clearText(player.getPlayerType());
         numOfPlayersInTheGame--;
     }
 

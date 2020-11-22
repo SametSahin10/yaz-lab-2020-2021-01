@@ -142,7 +142,7 @@ public class Player {
         } else {
             currentCell.clearIcon();
         }
-        currentCell.clearText(playerType);
+        currentCell.setText(null);
         currentCell = newCell;
     }
 
