@@ -577,6 +577,7 @@ public class Board {
     }
 
     private Cell findTargetCellForPlayerC(Cell[][] cells) {
+        Cell[] cellsThatHaveSecretGold = findTheClosestTwoCellsThatHaveSecretGoldForPlayerC();
         Cell targetCell = null;
         // Profit point is the product of (1 / distance) and the amount of gold.
         double highestProfitPoint = 0;
@@ -586,7 +587,14 @@ public class Board {
                     // Do not take currentCell into account while finding target cell.
                     continue;
                 }
-                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold();
+                boolean isSecretGoldAvailable = false;
+                if (cells[i][j].equals(cellsThatHaveSecretGold[0])) {
+                    isSecretGoldAvailable = true;
+                } else if (cells[i][j].equals(cellsThatHaveSecretGold[1])) {
+                    isSecretGoldAvailable = true;
+                } else if (cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible()) {
+                    isSecretGoldAvailable = true;
+                }
                 if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
                     // First cell that has gold is the target cell.
                     // The initial cell to start comparison.
@@ -724,6 +732,41 @@ public class Board {
         return targetCell;
     }
 
+    private Cell[] findTheClosestTwoCellsThatHaveSecretGoldForPlayerC() {
+        int shortestDistanceBetweenCells = 0;
+        Cell[] cellsThatHaveSecretGold = new Cell[2];
+        // Will find two cells that have secret gold.
+        for (int i = 0; i < 2; i++) {
+            Cell closestCell = null;
+            for (int j = 0; j < cells.length; j++) {
+                for (int k = 0; k < cells[j].length; k++) {
+                    if (cells[i][j].equals(cellsThatHaveSecretGold[0])) {
+                        // Do not check the first closest cell
+                        // that's been found on the first iteration
+                        continue;
+                    }
+                    if (cells[i][j].isHasSecretGold()) {
+                        // First cell that has secret gold is the the initial cell to start the comparison.
+                        if (closestCell == null) {
+                            closestCell = cells[i][j];
+                            cellsThatHaveSecretGold[i] = cells[i][j];
+                            shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
+                                playerC.getCurrentCell(), closestCell
+                            );
+                        }
+                        int distance = calculateDistanceBetweenTwoCells(playerC.getCurrentCell(), cells[i][j]);
+                        if (distance < shortestDistanceBetweenCells) {
+                            shortestDistanceBetweenCells = distance;
+                            closestCell = cells[i][j];
+                            cellsThatHaveSecretGold[i] = cells[i][j];
+                        }
+                    }
+                }
+            }
+        }
+        return cellsThatHaveSecretGold;
+    }
+
     private int calculateDistanceBetweenTwoCells(Cell firstCell, Cell secondCell) {
         int absDifferenceBetweenIndicesOfRows = Math.abs(firstCell.getIndexOfRow() - secondCell.getIndexOfRow());
         int absDifferenceBetweenIndicesOfColumns = Math.abs(firstCell.getIndexOfColumn() - secondCell.getIndexOfColumn());
@@ -737,6 +780,10 @@ public class Board {
     }
 
     private void endGameForEveryone() {
+        timerToMoveToTargetCellForA.stop();
+        timerToMoveToTargetCellForB.stop();
+        timerToMoveToTargetCellForC.stop();
+        timerToMoveToTargetCellForD.stop();
         GameOverScreen gameOverScreen = new GameOverScreen(playerA, playerB, playerC, playerD);
         frame.remove(boardPanel);
         frame.add(gameOverScreen.getGameOverPanel());
