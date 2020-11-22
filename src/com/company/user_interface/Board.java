@@ -234,7 +234,7 @@ public class Board {
                 Cell targetCell = findTargetCellForPlayerA(cells);
                 playerA.setTargetCell(targetCell);
                 String targetCellText = targetCell.getText();
-                if (targetCellText.isEmpty()) {
+                if (targetCellText == null || targetCellText.isEmpty()) {
                     targetCell.setText("A");
                 } else {
                     if (!targetCellText.contains("A")) {
@@ -283,7 +283,16 @@ public class Board {
                 System.out.println("Stopping timerToMoveToTargetCellForA");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
-                timerToMoveToTargetCellForB.start();
+                if (playerB.getTotalAmountOfGold() > 0) {
+                    // Player B is still in the game.
+                    timerToMoveToTargetCellForB.start();
+                } else if (playerC.getTotalAmountOfGold() > 0 ) {
+                    // Player C is still in the game.
+                    timerToMoveToTargetCellForC.start();
+                } else if (playerD.getTotalAmountOfGold() > 0) {
+                    // Player D is still in the game.
+                    timerToMoveToTargetCellForD.start();
+                }
             }
         });
 
@@ -294,7 +303,7 @@ public class Board {
                 Cell targetCell = findTargetCellForPlayerB(cells);
                 playerB.setTargetCell(targetCell);
                 String targetCellText = targetCell.getText();
-                if (targetCellText.isEmpty()) {
+                if (targetCellText == null || targetCellText.isEmpty()) {
                     targetCell.setText("B");
                 } else {
                     if (!targetCellText.contains("B")) {
@@ -343,7 +352,16 @@ public class Board {
                 System.out.println("Stopping timerToMoveToTargetCellForB");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
-                timerToMoveToTargetCellForC.start();
+                if (playerC.getTotalAmountOfGold() > 0) {
+                    // Player C is still in the game.
+                    timerToMoveToTargetCellForC.start();
+                } else if (playerD.getTotalAmountOfGold() > 0 ) {
+                    // Player D is still in the game.
+                    timerToMoveToTargetCellForD.start();
+                } else if (playerA.getTotalAmountOfGold() > 0) {
+                    // Player A is still in the game.
+                    timerToMoveToTargetCellForA.start();
+                }
             }
         });
 
@@ -354,7 +372,7 @@ public class Board {
                 Cell targetCell = findTargetCellForPlayerC(cells);
                 playerC.setTargetCell(targetCell);
                 String targetCellText = targetCell.getText();
-                if (targetCellText.isEmpty()) {
+                if (targetCellText == null || targetCellText.isEmpty()) {
                     targetCell.setText("C");
                 } else {
                     if (!targetCellText.contains("C")) {
@@ -403,7 +421,16 @@ public class Board {
                 System.out.println("Stopping timerToMoveToTargetCellForC");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
-                timerToMoveToTargetCellForD.start();
+                if (playerD.getTotalAmountOfGold() > 0) {
+                    // Player D is still in the game.
+                    timerToMoveToTargetCellForD.start();
+                } else if (playerA.getTotalAmountOfGold() > 0 ) {
+                    // Player A is still in the game.
+                    timerToMoveToTargetCellForA.start();
+                } else if (playerB.getTotalAmountOfGold() > 0) {
+                    // Player B is still in the game.
+                    timerToMoveToTargetCellForB.start();
+                }
             }
         });
 
@@ -414,7 +441,7 @@ public class Board {
                 Cell targetCell = findTargetCellForPlayerD(cells);
                 playerD.setTargetCell(targetCell);
                 String targetCellText = targetCell.getText();
-                if (targetCellText.isEmpty()) {
+                if (targetCellText == null || targetCellText.isEmpty()) {
                     targetCell.setText("D");
                 } else {
                     if (!targetCellText.contains("D")) {
@@ -464,7 +491,16 @@ public class Board {
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
                 // Restart the loop.
-                timerToMoveToTargetCellForA.start();
+                if (playerA.getTotalAmountOfGold() > 0) {
+                    // Player A is still in the game.
+                    timerToMoveToTargetCellForA.start();
+                } else if (playerB.getTotalAmountOfGold() > 0 ) {
+                    // Player B is still in the game.
+                    timerToMoveToTargetCellForB.start();
+                } else if (playerC.getTotalAmountOfGold() > 0) {
+                    // Player C is still in the game.
+                    timerToMoveToTargetCellForC.start();
+                }
             }
         });
 
@@ -696,6 +732,7 @@ public class Board {
 
     private void endGameForPlayer(Player player) {
         Cell currentCell = player.getCurrentCell();
+        currentCell.clearIcon();
         numOfPlayersInTheGame--;
     }
 
