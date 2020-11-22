@@ -114,7 +114,7 @@ public class Player {
             if (newCell.equals(targetCell)) {
                 // Player has reached to its target.
                 System.out.println("Player has reached to its target.");
-                newCell.clearText(playerType);
+                newCell.setText(null);
                 targetCell = null;
             }
         } else {

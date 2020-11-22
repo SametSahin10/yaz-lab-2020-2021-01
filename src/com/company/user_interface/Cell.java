@@ -1,14 +1,10 @@
 package com.company.user_interface;
 
-import com.company.utils.Icons;
-import com.company.utils.PlayerType;
-
 import javax.swing.*;
-import java.awt.*;
 
 public class Cell extends JLabel {
-    private int indexOfRow;
-    private int indexOfColumn;
+    private final int indexOfRow;
+    private final int indexOfColumn;
     private boolean hasGold;
     private boolean hasSecretGold;
     private int amountOfGold;
@@ -37,16 +33,8 @@ public class Cell extends JLabel {
         return indexOfRow;
     }
 
-    public void setIndexOfRow(int indexOfRow) {
-        this.indexOfRow = indexOfRow;
-    }
-
     public int getIndexOfColumn() {
         return indexOfColumn;
-    }
-
-    public void setIndexOfColumn(int indexOfColumn) {
-        this.indexOfColumn = indexOfColumn;
     }
 
     public boolean isHasGold() {
@@ -87,32 +75,6 @@ public class Cell extends JLabel {
 
     public void setSecretGoldVisible(boolean secretGoldVisible) {
         this.secretGoldVisible = secretGoldVisible;
-    }
-
-    public void clearText(PlayerType playerType) {
-        String text = getText();
-        if (text.isEmpty()) return;
-        String newText = "";
-        switch (playerType) {
-            case A:
-                newText = text.replace("A", "");
-                setText(newText);
-                break;
-            case B:
-                newText = text.replace("B", "");
-                setText(newText);
-                break;
-            case C:
-                newText = text.replace("C", "");
-                setText(newText);
-                break;
-            case D:
-                newText = text.replace("D", "");
-                setText(newText);
-                break;
-            default:
-                setText(newText);
-        }
     }
 
     public void clearIcon() {
