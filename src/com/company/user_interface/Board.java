@@ -78,20 +78,13 @@ public class Board {
     private Player playerC;
     private Player playerD;
 
-    private final boolean playerAselectedATarget = false;
-    private final boolean playerBselectedATarget = false;
-    private final boolean playerCSelectedATarget = false;
-    private final boolean playerDSelectedATarget = false;
-
-    private Timer timerToSelectTargetCellForA;
-    private Timer timerToSelectTargetCellForB;
-    private Timer timerToSelectTargetCellForC;
-    private Timer timerToSelectTargetCellForD;
-
     private Timer timerToMoveToTargetCellForA;
     private Timer timerToMoveToTargetCellForB;
     private Timer timerToMoveToTargetCellForC;
     private Timer timerToMoveToTargetCellForD;
+
+    // Global int to keep track of steps already taken;
+    int count = 0;
 
     public void initializeGUI() {
         setupBoard();
@@ -232,38 +225,43 @@ public class Board {
     }
 
     private void setupGameLoop() {
-        timerToSelectTargetCellForA = new Timer(3000, e -> {
-            if (playerA.getTargetCell() != null) {
-                boolean targetCellHasGold = playerA.getTargetCell().isHasGold();
-                if (targetCellHasGold) {
-                    // Player A has already a target cell that has gold.
-                    // Start moving to target.
-                    timerToMoveToTargetCellForA.start();
-                    return;
+        timerToMoveToTargetCellForA = new Timer(3000, actionEvent -> {
+            System.out.println("timerToMoveToTargetCellForA has started");
+            if (playerA.getTargetCell() == null || !(playerA.getTargetCell().isHasGold()) || !(playerA.getTargetCell().isHasSecretGold())) {
+                System.out.println("Player A is selecting target");
+                // Player A either does not have a target
+                // or the gold on its target has been taken by some other player.
+                Cell targetCell = findTargetCellForPlayerA(cells);
+                playerA.setTargetCell(targetCell);
+                String targetCellText = targetCell.getText();
+                if (targetCellText.isEmpty()) {
+                    targetCell.setText("A");
+                } else {
+                    targetCell.setText(targetCellText + " " + "A");
                 }
             }
 
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
+            int differenceBetweenIndicesOfRows = playerA.getCurrentCell().getIndexOfRow() - playerA.getTargetCell().getIndexOfRow();
+            int differenceBetweenIndicesOfColumns = playerA.getCurrentCell().getIndexOfColumn() - playerA.getTargetCell().getIndexOfColumn();
 
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerA.setTargetCell(randomCell);
-            String randomCellText = randomCell.getText();
-            if (randomCellText.isEmpty()) {
-                randomCell.setText("A");
+            if (differenceBetweenIndicesOfRows > 0) {
+                // Move player A up.
+                playerA.moveUp(cells);
+            } else if (differenceBetweenIndicesOfRows < 0) {
+                // Move player A down.
+                playerA.moveDown(cells);
             } else {
-                randomCell.setText(randomCellText + " " + "A");
+                // No need to go up or down.
+                // See if there's need to move left or right.
+                if (differenceBetweenIndicesOfColumns > 0) {
+                    // Move left.
+                    playerA.moveLeft(cells);
+                } else if (differenceBetweenIndicesOfColumns < 0) {
+                    // Move right.
+                    playerA.moveRight(cells);
+                }
             }
-            timerToMoveToTargetCellForA.start();
-        });
 
-        timerToMoveToTargetCellForA = new Timer(3000, e -> {
-            System.out.println("Player A is moving");
-            playerA.moveToTargetCell();
             if (playerA.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player A");
                 endGameForPlayer(playerA);
@@ -275,49 +273,51 @@ public class Board {
                 return;
             }
 
-            for (int i = 0; i < cells[0].length; i++) {
-                for (int j = 0; j < cells[i].length; j++) {
-                    if (cells[i][j] == null) {
-                        System.out.println("The cell " + i + ", " + j + " is null");
-                    }
-                }
+            count++;
+            if (count == numOfStepsToTakeOnEachMove || playerA.getTargetCell() == null) {
+                // Player A either used all of its steps or reached to its target.
+                System.out.println("Stopping timerToMoveToTargetCellForA");
+                ((Timer) actionEvent.getSource()).stop();
+                count = 0;
+                timerToMoveToTargetCellForB.start();
             }
-
-            timerToSelectTargetCellForB.start();
         });
 
-        timerToSelectTargetCellForB = new Timer(3000, e -> {
-            if (playerB.getTargetCell() != null) {
-                boolean targetCellHasGold = playerB.getTargetCell().isHasGold();
-                if (targetCellHasGold) {
-                    // Player B has already a target that has gold.
-                    // Start moving to target.
-                    timerToMoveToTargetCellForB.start();
-                    return;
+        timerToMoveToTargetCellForB = new Timer(3000, actionEvent -> {
+            System.out.println("timerToMoveToTargetCellForB has started");
+            if (playerB.getTargetCell() == null || !(playerB.getTargetCell().isHasGold()) || !(playerB.getTargetCell().isHasSecretGold())) {
+                System.out.println("Player B is selecting target");
+                Cell targetCell = findTargetCellForPlayerB(cells);
+                playerB.setTargetCell(targetCell);
+                String targetCellText = targetCell.getText();
+                if (targetCellText.isEmpty()) {
+                    targetCell.setText("B");
+                } else {
+                    targetCell.setText(targetCellText + " " + "B");
                 }
             }
 
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
+            int differenceBetweenIndicesOfRows = playerB.getCurrentCell().getIndexOfRow() - playerB.getTargetCell().getIndexOfRow();
+            int differenceBetweenIndicesOfColumns = playerB.getCurrentCell().getIndexOfColumn() - playerB.getTargetCell().getIndexOfColumn();
 
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerB.setTargetCell(randomCell);
-            String randomCellText = randomCell.getText();
-            if (randomCellText.isEmpty()) {
-                randomCell.setText("B");
+            if (differenceBetweenIndicesOfRows > 0) {
+                // Move player B up.
+                playerB.moveUp(cells);
+            } else if (differenceBetweenIndicesOfRows < 0) {
+                // Move player B down.
+                playerB.moveDown(cells);
             } else {
-                randomCell.setText(randomCellText + " " + "A");
+                // No need to go up or down.
+                // See if there's need to move left or right.
+                if (differenceBetweenIndicesOfColumns > 0) {
+                    // Move left.
+                    playerB.moveLeft(cells);
+                } else if (differenceBetweenIndicesOfColumns < 0) {
+                    // Move right.
+                    playerB.moveRight(cells);
+                }
             }
-            timerToMoveToTargetCellForB.start();
-        });
 
-        timerToMoveToTargetCellForB = new Timer(3000, e -> {
-            System.out.println("Player B is moving");
-            playerB.moveToTargetCell();
             if (playerB.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player B");
                 endGameForPlayer(playerB);
@@ -329,55 +329,55 @@ public class Board {
                 return;
             }
 
-            for (int i = 0; i < cells[0].length; i++) {
-                for (int j = 0; j < cells[i].length; j++) {
-                    if (cells[i][j] == null) {
-                        System.out.println("The cell " + i + ", " + j + " is null");
-                    }
-                }
+            count++;
+            if (count == numOfStepsToTakeOnEachMove || playerB.getTargetCell() == null) {
+                // Player B either used all of its steps or reached to its target.
+                ((Timer) actionEvent.getSource()).stop();
+                System.out.println("Stopping timerToMoveToTargetCellForB");
+                count = 0;
+                timerToMoveToTargetCellForC.start();
             }
-
-            timerToSelectTargetCellForC.start();
         });
 
-        timerToSelectTargetCellForC = new Timer(3000, e -> {
-            if (playerC.getTargetCell() != null) {
-                boolean targetCellHasGold = playerC.getTargetCell().isHasGold();
-                if (targetCellHasGold) {
-                    // Player C has already a target that has gold.
-                    // Start moving to target.
-                    timerToMoveToTargetCellForC.start();
-                    return;
+        timerToMoveToTargetCellForC = new Timer(3000, actionEvent -> {
+            System.out.println("timerToMoveToTargetCellForC has started");
+            if (playerC.getTargetCell() == null || !(playerC.getTargetCell().isHasGold()) || !(playerC.getTargetCell().isHasSecretGold())) {
+                System.out.println("Player C is selecting target");
+                Cell targetCell = findTargetCellForPlayerC(cells);
+                playerC.setTargetCell(targetCell);
+                String targetCellText = targetCell.getText();
+                if (targetCellText.isEmpty()) {
+                    targetCell.setText("C");
+                } else {
+                    targetCell.setText(targetCellText + " " + "C");
                 }
             }
 
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
+            int differenceBetweenIndicesOfRows = playerC.getCurrentCell().getIndexOfRow() - playerC.getTargetCell().getIndexOfRow();
+            int differenceBetweenIndicesOfColumns = playerC.getCurrentCell().getIndexOfColumn() - playerC.getTargetCell().getIndexOfColumn();
 
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerC.setTargetCell(randomCell);
-            String randomCellText = randomCell.getText();
-            if (randomCellText.isEmpty()) {
-                randomCell.setText("C");
+            if (differenceBetweenIndicesOfRows > 0) {
+                // Move player C up.
+                playerC.moveUp(cells);
+            } else if (differenceBetweenIndicesOfRows < 0) {
+                // Move player C down.
+                playerC.moveDown(cells);
             } else {
-                randomCell.setText(randomCellText + " " + "A");
+                // No need to go up or down.
+                // See if there's need to move left or right.
+                if (differenceBetweenIndicesOfColumns > 0) {
+                    // Move left.
+                    playerC.moveLeft(cells);
+                } else if (differenceBetweenIndicesOfColumns < 0) {
+                    // Move right.
+                    playerC.moveRight(cells);
+                }
             }
-            timerToMoveToTargetCellForC.start();
-        });
 
-        timerToMoveToTargetCellForC = new Timer(3000, e -> {
-            System.out.println("Player C is moving");
-            playerC.moveToTargetCell();
-            System.out.println("Amount of gold player C has: " + playerA.getTotalAmountOfGold());
             if (playerC.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player C");
                 endGameForPlayer(playerC);
             }
-
             int numOfCellsThatHaveGold = getNumOfCellsThatHaveGold();
             if (numOfPlayersInTheGame == 0 || numOfCellsThatHaveGold == 0) {
                 System.out.println("Game over");
@@ -385,50 +385,51 @@ public class Board {
                 return;
             }
 
-            for (int i = 0; i < cells[0].length; i++) {
-                for (int j = 0; j < cells[i].length; j++) {
-                    if (cells[i][j] == null) {
-                        System.out.println("The cell " + i + ", " + j + " is null");
-                    }
-                }
+            count++;
+            if (count == numOfStepsToTakeOnEachMove || playerC.getTargetCell() == null) {
+                // Player C either used all of its steps or reached to its target.
+                System.out.println("Stopping timerToMoveToTargetCellForC");
+                ((Timer) actionEvent.getSource()).stop();
+                count = 0;
+                timerToMoveToTargetCellForD.start();
             }
-
-            timerToSelectTargetCellForD.start();
         });
 
-        timerToSelectTargetCellForD = new Timer(3000, e -> {
-            if (playerD.getTargetCell() != null) {
-                boolean targetCellHasGold = playerD.getTargetCell().isHasGold();
-                if (targetCellHasGold) {
-                    // Player D has already a target that has gold.
-                    // Start moving to target.
-                    timerToMoveToTargetCellForD.start();
-                    return;
+        timerToMoveToTargetCellForD = new Timer(3000, actionEvent -> {
+            System.out.println("timerToMoveToTargetCellForD has started");
+            if (playerD.getTargetCell() == null || !(playerD.getTargetCell().isHasGold()) || !(playerD.getTargetCell().isHasSecretGold())) {
+                System.out.println("Player D is selecting target");
+                Cell targetCell = findTargetCellForPlayerD(cells);
+                playerD.setTargetCell(targetCell);
+                String targetCellText = targetCell.getText();
+                if (targetCellText.isEmpty()) {
+                    targetCell.setText("D");
+                } else {
+                    targetCell.setText(targetCellText + " " + "D");
                 }
             }
 
-            int randomIndex = Utils.selectIndexOfTargetCellRandomly(
-                    numOfRows, numOfColumns, indicesOfCellsThatHaveGold
-            );
-            int indexOfRow = randomIndex / numOfColumns;
-            int indexOfColumn = randomIndex % numOfColumns;
+            int differenceBetweenIndicesOfRows = playerD.getCurrentCell().getIndexOfRow() - playerD.getTargetCell().getIndexOfRow();
+            int differenceBetweenIndicesOfColumns = playerD.getCurrentCell().getIndexOfColumn() - playerD.getTargetCell().getIndexOfColumn();
 
-            Cell randomCell = cells[indexOfRow][indexOfColumn];
-
-            playerD.setTargetCell(randomCell);
-            String randomCellText = randomCell.getText();
-            if (randomCellText.isEmpty()) {
-                randomCell.setText("D");
+            if (differenceBetweenIndicesOfRows > 0) {
+                // Move player D up.
+                playerD.moveUp(cells);
+            } else if (differenceBetweenIndicesOfRows < 0) {
+                // Move player D down.
+                playerD.moveDown(cells);
             } else {
-                randomCell.setText(randomCellText + " " + "A");
+                // No need to go up or down.
+                // See if there's need to move left or right.
+                if (differenceBetweenIndicesOfColumns > 0) {
+                    // Move left.
+                    playerD.moveLeft(cells);
+                } else if (differenceBetweenIndicesOfColumns < 0) {
+                    // Move right.
+                    playerD.moveRight(cells);
+                }
             }
 
-            timerToMoveToTargetCellForD.start();
-        });
-
-        timerToMoveToTargetCellForD = new Timer(3000, e -> {
-            System.out.println("Player D is moving");
-            playerD.moveToTargetCell();
             if (playerD.getTotalAmountOfGold() <= 0) {
                 System.out.println("Ending the game for player D");
                 endGameForPlayer(playerD);
@@ -440,31 +441,148 @@ public class Board {
                 return;
             }
 
-            for (int i = 0; i < cells[0].length; i++) {
-                for (int j = 0; j < cells[i].length; j++) {
-                    if (cells[i][j] == null) {
-                        System.out.println("The cell " + i + ", " + j + " is null");
+            count++;
+            if (count == numOfStepsToTakeOnEachMove || playerD.getTargetCell() == null) {
+                // Player D either used all of its steps or reached to its target.
+                System.out.println("Stopping timerToMoveToTargetCellForD");
+                ((Timer) actionEvent.getSource()).stop();
+                count = 0;
+                // Restart the loop.
+                timerToMoveToTargetCellForA.start();
+            }
+        });
+
+//        Timer timer = new Timer(3000, e -> timerToMoveToTargetCellForA.start());
+//        timer.setRepeats(false);
+//        timer.start();
+        timerToMoveToTargetCellForA.setInitialDelay(2000);
+        timerToMoveToTargetCellForA.start();
+    }
+
+    private Cell findTargetCellForPlayerA(Cell[][] cells) {
+        Cell targetCell = null;
+        int shortestDistanceBetweenCells = 0;
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (playerA.getCurrentCell().equals(cells[i][j])) {
+                    // Do not take currentCell into account while finding target cell.
+                    continue;
+                }
+                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
+                if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
+                    // First cell that has gold is the target cell.
+                    // The initial cell to start comparison.
+                    if (targetCell == null) {
+                        targetCell = cells[i][j];
+                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
+                            playerA.getCurrentCell(), targetCell
+                        );
+                    }
+                    int distance = calculateDistanceBetweenTwoCells(playerA.getCurrentCell(), cells[i][j]);
+                    if (distance < shortestDistanceBetweenCells) {
+                        shortestDistanceBetweenCells = distance;
+                        targetCell = cells[i][j];
                     }
                 }
             }
+        }
+        return targetCell;
+    }
 
-            // Start the loop again.
-            timerToSelectTargetCellForA.start();
-        });
+    private Cell findTargetCellForPlayerB(Cell[][] cells) {
+        Cell targetCell = null;
+        int shortestDistanceBetweenCells = 0;
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (playerB.getCurrentCell().equals(cells[i][j])) {
+                    // Do not take currentCell into account while finding target cell.
+                    continue;
+                }
+                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
+                if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
+                    // First cell that has gold is the target cell.
+                    // The initial cell to start comparison.
+                    if (targetCell == null) {
+                        targetCell = cells[i][j];
+                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
+                            playerB.getCurrentCell(), targetCell
+                        );
+                    }
+                    int distance = calculateDistanceBetweenTwoCells(playerB.getCurrentCell(), cells[i][j]);
+                    if (distance < shortestDistanceBetweenCells) {
+                        shortestDistanceBetweenCells = distance;
+                        targetCell = cells[i][j];
+                    }
+                }
+            }
+        }
+        return targetCell;
+    }
 
-        timerToSelectTargetCellForA.setRepeats(false);
-        timerToSelectTargetCellForB.setRepeats(false);
-        timerToSelectTargetCellForC.setRepeats(false);
-        timerToSelectTargetCellForD.setRepeats(false);
+    private Cell findTargetCellForPlayerC(Cell[][] cells) {
+        Cell targetCell = null;
+        int shortestDistanceBetweenCells = 0;
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (playerC.getCurrentCell().equals(cells[i][j])) {
+                    // Do not take currentCell into account while finding target cell.
+                    continue;
+                }
+                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
+                if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
+                    // First cell that has gold is the target cell.
+                    // The initial cell to start comparison.
+                    if (targetCell == null) {
+                        targetCell = cells[i][j];
+                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
+                            playerC.getCurrentCell(), targetCell
+                        );
+                    }
+                    int distance = calculateDistanceBetweenTwoCells(playerC.getCurrentCell(), cells[i][j]);
+                    if (distance < shortestDistanceBetweenCells) {
+                        shortestDistanceBetweenCells = distance;
+                        targetCell = cells[i][j];
+                    }
+                }
+            }
+        }
+        return targetCell;
+    }
 
-        timerToMoveToTargetCellForA.setRepeats(false);
-        timerToMoveToTargetCellForB.setRepeats(false);
-        timerToMoveToTargetCellForC.setRepeats(false);
-        timerToMoveToTargetCellForD.setRepeats(false);
+    private Cell findTargetCellForPlayerD(Cell[][] cells) {
+        Cell targetCell = null;
+        int shortestDistanceBetweenCells = 0;
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                if (playerC.getCurrentCell().equals(cells[i][j])) {
+                    // Do not take currentCell into account while finding target cell.
+                    continue;
+                }
+                boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
+                if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
+                    // First cell that has gold is the target cell.
+                    // The initial cell to start comparison.
+                    if (targetCell == null) {
+                        targetCell = cells[i][j];
+                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
+                                playerD.getCurrentCell(), targetCell
+                        );
+                    }
+                    int distance = calculateDistanceBetweenTwoCells(playerD.getCurrentCell(), cells[i][j]);
+                    if (distance < shortestDistanceBetweenCells) {
+                        shortestDistanceBetweenCells = distance;
+                        targetCell = cells[i][j];
+                    }
+                }
+            }
+        }
+        return targetCell;
+    }
 
-        Timer timer = new Timer(1000, e -> timerToSelectTargetCellForA.start());
-        timer.setRepeats(false);
-        timer.start();
+    private int calculateDistanceBetweenTwoCells(Cell firstCell, Cell secondCell) {
+        int absDifferenceBetweenIndicesOfRows = Math.abs(firstCell.getIndexOfRow() - secondCell.getIndexOfRow());
+        int absDifferenceBetweenIndicesOfColumns = Math.abs(firstCell.getIndexOfColumn() - secondCell.getIndexOfColumn());
+        return absDifferenceBetweenIndicesOfRows + absDifferenceBetweenIndicesOfColumns;
     }
 
     private void endGameForPlayer(Player player) {

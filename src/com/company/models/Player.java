@@ -107,7 +107,6 @@ public class Player {
     }
 
     public void move(Cell newCell) {
-        System.out.println("Moving to " + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn());
         totalAmountOfSteps++;
         decreaseTheAmountOfGold(costOfEachMove);
         if (newCell.isHasGold()) {
@@ -131,6 +130,7 @@ public class Player {
                 increaseTheAmountOfGold(newCell.getAmountOfSecretGold());
                 newCell.setAmountOfSecretGold(0);
                 newCell.setHasSecretGold(false);
+                newCell.setSecretGoldVisible(false);
             }
         }
 
@@ -148,7 +148,26 @@ public class Player {
         currentCell = newCell;
     }
 
-    public void moveToTargetCell() {
+    // TODO: The targetCell could be occupied by other players.
+    // TODO: Take a look at that.
+
+    public void moveUp(Cell[][] cells) {
+        Cell targetCell = cells[currentCell.getIndexOfRow() - 1][currentCell.getIndexOfColumn()];
+        move(targetCell);
+    }
+
+    public void moveDown(Cell[][] cells) {
+        Cell targetCell = cells[currentCell.getIndexOfRow() + 1][currentCell.getIndexOfColumn()];
+        move(targetCell);
+    }
+
+    public void moveLeft(Cell[][] cells) {
+        Cell targetCell = cells[currentCell.getIndexOfRow()][currentCell.getIndexOfColumn() - 1];
+        move(targetCell);
+    }
+
+    public void moveRight(Cell[][] cells) {
+        Cell targetCell = cells[currentCell.getIndexOfRow()][currentCell.getIndexOfColumn() + 1];
         move(targetCell);
     }
 

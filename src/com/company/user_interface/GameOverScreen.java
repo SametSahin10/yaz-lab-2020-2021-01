@@ -50,6 +50,7 @@ public class GameOverScreen {
 
     private JTable createTableToHoldStats() {
         String[] columnNames = {
+            "Player",
             "Total amount of steps",
             "Total amount of gold spent",
             "Current total amount of gold",
