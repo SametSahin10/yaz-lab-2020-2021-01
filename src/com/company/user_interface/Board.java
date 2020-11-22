@@ -447,7 +447,7 @@ public class Board {
             count++;
             if (count == numOfStepsToTakeOnEachMove || playerD.getTargetCell() == null) {
                 // Player D either used all of its steps or reached to its target.
-                playerB.decreaseTheAmountOfGold(costOfEachMoveForPlayerB);
+                playerD.decreaseTheAmountOfGold(costOfEachMoveForPlayerD);
                 System.out.println("Stopping timerToMoveToTargetCellForD");
                 ((Timer) actionEvent.getSource()).stop();
                 count = 0;
@@ -565,12 +565,91 @@ public class Board {
 
     private Cell findTargetCellForPlayerD(Cell[][] cells) {
         Cell targetCell = null;
-        int shortestDistanceBetweenCells = 0;
+        // Profit point is the product of (1 / distance) and the amount of gold.
+        double highestProfitPoint = 0;
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                if (playerC.getCurrentCell().equals(cells[i][j])) {
+                if (playerD.getCurrentCell().equals(cells[i][j])) {
                     // Do not take currentCell into account while finding target cell.
                     continue;
+                }
+                if (cells[i][j].equals(playerA.getTargetCell())) {
+                    // The target cell of player A.
+                    // Check if player A can reach to its target before player D
+                    int numOfVerticalStepsPlayerANeedsToTake = Math.abs(
+                        playerA.getTargetCell().getIndexOfRow() - playerA.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerANeedsToTake = Math.abs(
+                        playerA.getTargetCell().getIndexOfColumn() - playerA.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerANeedsToTake = numOfHorizontalStepsPlayerANeedsToTake +
+                                                            numOfVerticalStepsPlayerANeedsToTake;
+
+                    int numOfVerticalStepsPlayerDNeedsToTake = Math.abs(
+                        playerA.getTargetCell().getIndexOfRow() - playerD.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerDNeedsToTake = Math.abs(
+                        playerA.getTargetCell().getIndexOfColumn() - playerD.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerDNeedsToTake = numOfHorizontalStepsPlayerDNeedsToTake +
+                                                            numOfVerticalStepsPlayerDNeedsToTake;
+
+                    if (numOfTotalStepsPlayerDNeedsToTake > numOfTotalStepsPlayerANeedsToTake) {
+                        // Player D cannot reach to this cell before player A.
+                        continue;
+                    }
+                }
+                if (cells[i][j].equals(playerB.getTargetCell())) {
+                    // The target cell of player B.
+                    // Check if player A can reach to its target before player D
+                    int numOfVerticalStepsPlayerANeedsToTake = Math.abs(
+                            playerB.getTargetCell().getIndexOfRow() - playerB.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerANeedsToTake = Math.abs(
+                            playerB.getTargetCell().getIndexOfColumn() - playerB.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerANeedsToTake = numOfHorizontalStepsPlayerANeedsToTake +
+                            numOfVerticalStepsPlayerANeedsToTake;
+
+                    int numOfVerticalStepsPlayerDNeedsToTake = Math.abs(
+                            playerB.getTargetCell().getIndexOfRow() - playerD.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerDNeedsToTake = Math.abs(
+                            playerB.getTargetCell().getIndexOfColumn() - playerD.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerDNeedsToTake = numOfHorizontalStepsPlayerDNeedsToTake +
+                            numOfVerticalStepsPlayerDNeedsToTake;
+
+                    if (numOfTotalStepsPlayerDNeedsToTake > numOfTotalStepsPlayerANeedsToTake) {
+                        // Player D cannot reach to this cell before player B.
+                        continue;
+                    }
+                }
+                if (cells[i][j].equals(playerC.getTargetCell())) {
+                    // The target cell of player C.
+                    // Check if player C can reach to its target before player D
+                    int numOfVerticalStepsPlayerANeedsToTake = Math.abs(
+                            playerC.getTargetCell().getIndexOfRow() - playerC.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerANeedsToTake = Math.abs(
+                            playerC.getTargetCell().getIndexOfColumn() - playerC.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerANeedsToTake = numOfHorizontalStepsPlayerANeedsToTake +
+                            numOfVerticalStepsPlayerANeedsToTake;
+
+                    int numOfVerticalStepsPlayerDNeedsToTake = Math.abs(
+                            playerC.getTargetCell().getIndexOfRow() - playerD.getCurrentCell().getIndexOfRow()
+                    );
+                    int numOfHorizontalStepsPlayerDNeedsToTake = Math.abs(
+                            playerC.getTargetCell().getIndexOfColumn() - playerD.getCurrentCell().getIndexOfColumn()
+                    );
+                    int numOfTotalStepsPlayerDNeedsToTake = numOfHorizontalStepsPlayerDNeedsToTake +
+                            numOfVerticalStepsPlayerDNeedsToTake;
+
+                    if (numOfTotalStepsPlayerDNeedsToTake > numOfTotalStepsPlayerANeedsToTake) {
+                        // Player D cannot reach to this cell before player C.
+                        continue;
+                    }
                 }
                 boolean isSecretGoldAvailable = cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible();
                 if (cells[i][j].isHasGold() || isSecretGoldAvailable) {
@@ -578,13 +657,17 @@ public class Board {
                     // The initial cell to start comparison.
                     if (targetCell == null) {
                         targetCell = cells[i][j];
-                        shortestDistanceBetweenCells = calculateDistanceBetweenTwoCells(
-                                playerD.getCurrentCell(), targetCell
-                        );
                     }
                     int distance = calculateDistanceBetweenTwoCells(playerD.getCurrentCell(), cells[i][j]);
-                    if (distance < shortestDistanceBetweenCells) {
-                        shortestDistanceBetweenCells = distance;
+                    double profitPoint;
+                    if (cells[i][j].isHasSecretGold() && cells[i][j].isSecretGoldVisible()) {
+                        // Use the amount of secret gold if secret gold is present and available.
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfSecretGold();
+                    } else {
+                        profitPoint = (1 / (double) distance) * cells[i][j].getAmountOfGold();
+                    }
+                    if (profitPoint > highestProfitPoint) {
+                        highestProfitPoint = profitPoint;
                         targetCell = cells[i][j];
                     }
                 }
