@@ -777,6 +777,36 @@ public class Board {
         Cell currentCell = player.getCurrentCell();
         currentCell.clearIcon();
         numOfPlayersInTheGame--;
+        Cell targetCell = player.getTargetCell();
+        if (targetCell == null) return;
+        String targetCellText = targetCell.getText();
+        if (targetCellText == null || targetCellText.isEmpty()) return;
+        switch (player.getPlayerType()) {
+            case A:
+                if (targetCellText.contains("A")) {
+                    String newTargetCellText = targetCellText.replace("A", "");
+                    targetCell.setText(newTargetCellText);
+                }
+                break;
+            case B:
+                if (targetCellText.contains("B")) {
+                    String newTargetCellText = targetCellText.replace("B", "");
+                    targetCell.setText(newTargetCellText);
+                }
+                break;
+            case C:
+                if (targetCellText.contains("C")) {
+                    String newTargetCellText = targetCellText.replace("C", "");
+                    targetCell.setText(newTargetCellText);
+                }
+                break;
+            case D:
+                if (targetCellText.contains("D")) {
+                    String newTargetCellText = targetCellText.replace("D", "");
+                    targetCell.setText(newTargetCellText);
+                }
+                break;
+        }
     }
 
     private void endGameForEveryone() {
@@ -787,6 +817,11 @@ public class Board {
         GameOverScreen gameOverScreen = new GameOverScreen(playerA, playerB, playerC, playerD);
         frame.remove(boardPanel);
         frame.add(gameOverScreen.getGameOverPanel());
+
+        playerA.saveStepsIntoFile();
+        playerB.saveStepsIntoFile();
+        playerC.saveStepsIntoFile();
+        playerD.saveStepsIntoFile();
     }
 
     public JPanel getBoardPanel() {

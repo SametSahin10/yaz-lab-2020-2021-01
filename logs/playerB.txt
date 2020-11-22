@@ -1,0 +1,5 @@
+Player B has moved to 2.row 20.column (1, 19)
+Player B has moved to 2.row 19.column (1, 18)
+Player B has moved to 2.row 18.column (1, 17)
+Player B has moved to 2.row 17.column (1, 16)
+Player B has moved to 2.row 16.column (1, 15)

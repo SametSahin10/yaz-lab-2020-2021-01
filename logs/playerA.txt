@@ -1,0 +1,8 @@
+Player A has moved to 2.row 1.column (1, 0)
+Player A has moved to 3.row 1.column (2, 0)
+Player A has moved to 3.row 2.column (2, 1)
+Player A has moved to 4.row 2.column (3, 1)
+Player A has moved to 5.row 2.column (4, 1)
+Player A has moved to 5.row 1.column (4, 0)
+Player A has moved to 5.row 2.column (4, 1)
+Player A has moved to 5.row 3.column (4, 2)

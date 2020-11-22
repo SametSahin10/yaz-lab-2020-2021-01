@@ -4,6 +4,13 @@ import com.company.user_interface.Cell;
 import com.company.utils.Icons;
 import com.company.utils.PlayerType;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Player {
     private final PlayerType playerType;
     private final int costOfEachMove;
@@ -15,6 +22,8 @@ public class Player {
     private int totalAmountOfSteps;
     private Cell currentCell;
     private Cell targetCell;
+
+    private String recordOfStepsToWriteToFile;
 
     public Player(
         PlayerType playerType,
@@ -35,6 +44,7 @@ public class Player {
         this.totalAmountOfSteps = 0;
         this.currentCell = currentCell;
         this.targetCell = targetCell;
+        this.recordOfStepsToWriteToFile = "";
     }
 
     public PlayerType getPlayerType() {
@@ -107,6 +117,7 @@ public class Player {
 
     public void move(Cell newCell) {
         totalAmountOfSteps++;
+        saveStepIntoString(newCell);
         if (newCell.isHasGold()) {
             increaseTheAmountOfGold(newCell.getAmountOfGold());
             newCell.setAmountOfGold(0);
@@ -144,6 +155,80 @@ public class Player {
         }
         currentCell.setText(null);
         currentCell = newCell;
+    }
+
+    private void saveStepIntoString(Cell newCell) {
+        String record;
+        switch (playerType) {
+            case A:
+                record = "Player A has moved to "
+                         + (newCell.getIndexOfRow() + 1)
+                         + ".row "
+                         + (newCell.getIndexOfColumn() + 1)
+                         + ".column"
+                         + " (" + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn() + ")\n";
+                recordOfStepsToWriteToFile += record;
+                System.out.println("recordOfStepsToWriteToFile: " + recordOfStepsToWriteToFile);
+                break;
+            case B:
+                record = "Player B has moved to "
+                         + (newCell.getIndexOfRow() + 1)
+                         + ".row "
+                         + (newCell.getIndexOfColumn() + 1)
+                         + ".column"
+                         + " (" + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn() + ")\n";
+                recordOfStepsToWriteToFile += record;
+                System.out.println("recordOfStepsToWriteToFile: " + recordOfStepsToWriteToFile);
+                break;
+            case C:
+                record = "Player C has moved to "
+                        + (newCell.getIndexOfRow() + 1)
+                        + ".row "
+                        + (newCell.getIndexOfColumn() + 1)
+                        + ".column"
+                        + " (" + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn() + ")\n";
+                recordOfStepsToWriteToFile += record;
+                System.out.println("recordOfStepsToWriteToFile: " + recordOfStepsToWriteToFile);
+                break;
+            case D:
+                record = "Player D has moved to "
+                        + (newCell.getIndexOfRow() + 1)
+                        + ".row "
+                        + (newCell.getIndexOfColumn() + 1)
+                        + ".column"
+                        + " (" + newCell.getIndexOfRow() + ", " + newCell.getIndexOfColumn() + ")\n";
+                recordOfStepsToWriteToFile += record;
+                System.out.println("recordOfStepsToWriteToFile: " + recordOfStepsToWriteToFile);
+                break;
+        }
+    }
+
+    public void saveStepsIntoFile() {
+        String rootDirectory = System.getProperty("user.dir");
+        String logsDirectoryName = "logs";
+        String fileName;
+        switch (playerType) {
+            case A:
+                fileName = "playerA.txt";
+                break;
+            case B:
+                fileName = "playerB.txt";
+                break;
+            case C:
+                fileName = "playerC.txt";
+                break;
+            case D:
+                fileName = "playerD.txt";
+                break;
+            default:
+                fileName = "player.txt";
+        }
+        String fullPathOfTheFile = rootDirectory + File.separator + logsDirectoryName + File.separator + fileName;
+        try {
+            Files.write(Paths.get(fullPathOfTheFile), recordOfStepsToWriteToFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // TODO: The targetCell could be occupied by other players.
