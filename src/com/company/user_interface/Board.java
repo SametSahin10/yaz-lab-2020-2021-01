@@ -237,7 +237,10 @@ public class Board {
                 if (targetCellText.isEmpty()) {
                     targetCell.setText("A");
                 } else {
-                    targetCell.setText(targetCellText + " " + "A");
+                    if (!targetCellText.contains("A")) {
+                        // Add "A" only if the label does not already have "A" in its text.
+                        targetCell.setText(targetCellText + " " + "A");
+                    }
                 }
             }
 
@@ -294,7 +297,10 @@ public class Board {
                 if (targetCellText.isEmpty()) {
                     targetCell.setText("B");
                 } else {
-                    targetCell.setText(targetCellText + " " + "B");
+                    if (!targetCellText.contains("B")) {
+                        // Add "B" only if the label does not already have "B" in its text.
+                        targetCell.setText(targetCellText + " " + "B");
+                    }
                 }
             }
 
@@ -351,7 +357,10 @@ public class Board {
                 if (targetCellText.isEmpty()) {
                     targetCell.setText("C");
                 } else {
-                    targetCell.setText(targetCellText + " " + "C");
+                    if (!targetCellText.contains("C")) {
+                        // Add "C" only if the label does not already have "C" in its text.
+                        targetCell.setText(targetCellText + " " + "C");
+                    }
                 }
             }
 
@@ -408,7 +417,10 @@ public class Board {
                 if (targetCellText.isEmpty()) {
                     targetCell.setText("D");
                 } else {
-                    targetCell.setText(targetCellText + " " + "D");
+                    if (!targetCellText.contains("D")) {
+                        // Add "D" only if the label does not already have "D" in its text.
+                        targetCell.setText(targetCellText + " " + "D");
+                    }
                 }
             }
 
